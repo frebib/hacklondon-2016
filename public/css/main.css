@@ -8,13 +8,13 @@ body {
 }
 
 #option-panel{
+    text-align: center;
     float: left;
     padding: 50px;
-    border: 2px solid #bfbfbf;
+    border: 0px solid #bfbfbf;
     border-radius: 20px;
     background-color: #e6e6e6;
     white-space:nowrap;
-    display:inline-block;
     width: 200px;
     position: absolute;
     top: 10px;
@@ -24,6 +24,24 @@ body {
     padding: 10px 0px;
     text-align: center;
 }
+.option-name{
+    margin: 0 -50px;
+    font-size: 28px;
+    /*border-top: 1px solid black;*/
+    /*border-bottom: 1px solid black;*/
+    background-color: #d9d9d9;
+}
 .option-container > div{
     padding: 8px;
+}
+button{
+    margin: 10px 0px;
+    color: #4CAF50;
+    border: none;
+    text-align: center;
+    display: inline-block;
+    font-size: 23px;
+}
+button:hover{
+    color: #3e8e41;
 }

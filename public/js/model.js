@@ -52,7 +52,7 @@ function Player(vis) {
                 )
                 .append(
                     $("<div></div>")
-                        .attr("class", "option-name")
+                        .attr("class", "option-time")
                         .text(o.time + " hour" + (o.time == 1 ? "" : "s"))
                 )
                 .append(
