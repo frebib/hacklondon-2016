@@ -13,6 +13,9 @@ function() {function Visualiser() {
 
     var width = $container.width(),
         height = $container.height();
+    var isMouseDown = false;
+    var mouseDownLocation = {x: 0, y: 0};
+    var globeRotation = {x: 670, y: 400};
 
     var projection = d3.geo.orthographic()
         .scale(400)
@@ -34,17 +37,52 @@ function() {function Visualiser() {
         .attr("width", width)
         .attr("height", height);
 
-    svg.on("mouseup", function () {
-        var p = d3.mouse(this);
-        projection.rotate([scaleX(p[0]), scaleY(p[1])]);
-        svg.selectAll("path").attr("d", path);
-    });
-
     $container.on("mousemove", function(e) {
         mousePosition = [e.screenX, e.screenY];
         $tooltip.css("top", mousePosition[1] - 140);
         $tooltip.css("left", mousePosition[0] - 15);
     });
+
+    var $svg = $container.find("svg");
+
+    $svg.on("mousemove", function(e) {
+        if (!isMouseDown)
+            return;
+
+        globeRotation.x += (e.clientX - mouseDownLocation.x);
+        globeRotation.y += (e.clientY - mouseDownLocation.y);
+
+        mouseDownLocation.x = e.clientX;
+        mouseDownLocation.y = e.clientY;
+
+        if (globeRotation.y > 800) globeRotation.y = 800;
+        if (globeRotation.y < 0)   globeRotation.y = 0;
+
+        projection.rotate([scaleX(globeRotation.x), scaleY(globeRotation.y)]);
+        svg.selectAll("path").attr("d", path);
+    });
+
+    $svg.on("mousedown", function(e) {
+        isMouseDown = true;
+        mouseDownLocation.x = e.clientX;
+        mouseDownLocation.y = e.clientY;
+
+        e.preventDefault();
+        return false;
+    });
+
+    $svg.on("mouseup", function(e) {
+        isMouseDown = false;
+        e.preventDefault();
+        return false;
+    });
+
+    $svg.on("mousedrag", function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    loadJson();
 
     function loadJson() {
         var topojsonObject = {
