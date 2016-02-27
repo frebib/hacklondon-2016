@@ -66,7 +66,6 @@ $(function() {
             var parsed = parseAirports(airports);
 
             parsed.forEach(function(a) {
-                console.log(a);
                 topojsonObject.objects.events.coordinates = [a];
                 svg.append("path")
                     .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
