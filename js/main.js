@@ -84,6 +84,35 @@ $(function() {
         });
     }
 
+    registerFlightPath([[0, 0], [100, 100]]);
+
+    function registerFlightPath(fp) {
+        var test = {
+            type: "Topology",
+            objects: {
+                flights: {
+                    type: "GeometryCollection",
+                    geometries: [
+                        { type: "Polygon", arcs: [[0]] }
+                    ]
+                }
+            },
+            arcs: [
+                fp
+            ],
+            transform: {
+                scale: [1, 1],
+                translate: [0, 0]
+            }
+        };
+
+        svg.append("path")
+            .datum(topojson.feature(test, test.objects.flights))
+            .attr("class", "flight-path")
+            .attr("d", path)
+            .attr("stroke", "blue");
+    }
+
     function getObjectFromTopojson(tj) {
         try {
             return tj.geometry.coordinates[0][2]
