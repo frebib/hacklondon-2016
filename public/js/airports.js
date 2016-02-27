@@ -44,8 +44,6 @@ function Airports(onLoad) {
         for (var i = 0; i < this.locatedAirports.length; i++) {
             var cur = this.locatedAirports[i][2];
             if (cur.iso == code || cur.iata == code) {
-                console.log(parseFloat(cur.lon) == this.locatedAirports[i][0]);
-
                 return this.locatedAirports[i];
             }
         }
