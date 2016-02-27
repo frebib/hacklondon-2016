@@ -12,8 +12,6 @@ function Player(vis) {
         this.currentAirport = option.airport;
         this.money -= option.cost;
         this.date.setTime(this.date.getTime() + option.time * 60 * 60 * 1000);
-
-        console.log(this);
     };
 
     this.getNextOptions = function() {
@@ -62,13 +60,12 @@ function Player(vis) {
                         .click(function() {
                             obj.carryOutOption(o);
                             obj.refresh();
+                            obj.vis.panToAirport(o.airport);
                         })
                 );
 
             all.append(container);
         });
-
-        console.log($optionPanel);
 
         $optionPanel.text("");
         $optionPanel.append(all);
@@ -99,8 +96,6 @@ function Player(vis) {
                     .attr("class", "details-date")
                     .text(this.date)
             );
-
-        console.log("show details");
     };
 
     this.refresh = function() {

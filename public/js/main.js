@@ -1,4 +1,5 @@
-function Visualiser() {
+function Visualiser(onLoad) {
+    this.onLoad = onLoad;
     var countryFill = "#b5b690";
     var countryBorder = "#46472b";
     var airportFill = "#46472b";
@@ -14,6 +15,7 @@ function Visualiser() {
     var isMouseDown = false;
     var mouseDownLocation = {x: 0, y: 0};
     var globeRotation = {x: 670, y: 400};
+
 
     var projection = d3.geo.orthographic()
         .scale(400)
@@ -53,11 +55,7 @@ function Visualiser() {
         mouseDownLocation.x = e.clientX;
         mouseDownLocation.y = e.clientY;
 
-        if (globeRotation.y > 800) globeRotation.y = 800;
-        if (globeRotation.y < 0)   globeRotation.y = 0;
-
-        projection.rotate([scaleX(globeRotation.x), scaleY(globeRotation.y)]);
-        svg.selectAll("path").attr("d", path);
+        handleRotation();
     });
 
     $svg.on("mousedown", function(e) {
@@ -80,6 +78,16 @@ function Visualiser() {
         return false;
     });
 
+    function handleRotation() {
+        if (globeRotation.y > 800) globeRotation.y = 800;
+        if (globeRotation.y < 0)   globeRotation.y = 0;
+
+        projection.rotate([scaleX(globeRotation.x), scaleY(globeRotation.y)]);
+        svg.selectAll("path").attr("d", path);
+
+        console.log(globeRotation);
+    }
+
     load();
 
     function load() {
@@ -95,6 +103,7 @@ function Visualiser() {
                 .attr("stroke-width", "0.1px");
 
             loadAirports();
+            onLoad();
         });
     }
 
@@ -194,15 +203,16 @@ function Visualiser() {
         var ao1 = airports.getLocatedAirportForCode(a1);
         var ao2 = airports.getLocatedAirportForCode(a2);
 
-        console.log(ao1);
-        console.log(ao2);
-
         registerFlightPath([ao1, ao2]);
     };
 
     this.clearFlightPaths = function() {
-        svg.selectAll(".flight-paths").remove();
-    }
+        svg.selectAll(".flight-path").remove();
+    };
+
+    this.panToAirport = function(code) {
+
+    };
 }
 
 var vis;
@@ -211,7 +221,8 @@ var player;
 
 $(window).load(function() {
     airports = new Airports(function() {
-        vis = new Visualiser();
-        player = new Player(vis);
+        vis = new Visualiser(function() {
+            player = new Player(vis);
+        });
     });
 });

@@ -9,7 +9,7 @@ function Airports(onLoad) {
             if (error) throw error;
 
             obj.airports = rawAirports;
-            obj.locatedAirports = parseAirports(rawAirports);
+            obj.locatedAirports = parseAirports(obj.airports);
 
             obj.onLoad();
         });
@@ -38,9 +38,14 @@ function Airports(onLoad) {
     };
 
     this.getLocatedAirportForCode = function(code) {
+        // soz
+        this.locatedAirports = parseAirports(this.airports);
+
         for (var i = 0; i < this.locatedAirports.length; i++) {
             var cur = this.locatedAirports[i][2];
             if (cur.iso == code || cur.iata == code) {
+                console.log(parseFloat(cur.lon) == this.locatedAirports[i][0]);
+
                 return this.locatedAirports[i];
             }
         }
