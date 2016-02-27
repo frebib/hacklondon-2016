@@ -1,5 +1,4 @@
-$(
-function() {function Visualiser() {
+function Visualiser() {
     var countryFill = "#b5b690";
     var countryBorder = "#46472b";
     var airportFill = "#46472b";
@@ -9,7 +8,6 @@ function() {function Visualiser() {
 
     var $container = $("body");
     var $tooltip = $("#tooltip");
-    var airports = [];
 
     var width = $container.width(),
         height = $container.height();
@@ -82,9 +80,25 @@ function() {function Visualiser() {
         return false;
     });
 
-    loadJson();
+    load();
 
-    function loadJson() {
+    function loadg() {
+        d3.json("json/world-110m.json", function (error, world) {
+            if (error) throw error;
+
+            svg.append("path")
+                .datum(topojson.feature(world, world.objects.countries))
+                .attr("class", "land")
+                .attr("d", path)
+                .attr("fill", countryFill)
+                .attr("stroke", countryBorder)
+                .attr("stroke-width", "0.1px");
+
+            loadAirports();
+        });
+    }
+
+    function loadAirports() {
         var topojsonObject = {
             type: "Topology",
             objects: {
@@ -100,42 +114,24 @@ function() {function Visualiser() {
             }
         };
 
-        d3.json("json/world-110m.json", function (error, world) {
-            if (error) throw error;
-
+        airports.locatedAirports.forEach(function (a) {
+            topojsonObject.objects.events.coordinates = [a];
             svg.append("path")
-                .datum(topojson.feature(world, world.objects.countries))
-                .attr("class", "land")
-                .attr("d", path)
-                .attr("fill", countryFill)
-                .attr("stroke", countryBorder)
-                .attr("stroke-width", "0.1px");
-        });
-
-        d3.json("json/airports.json", function (error, rawAirports) {
-            if (error) throw error;
-
-            airports = parseAirports(rawAirports);
-
-            airports.forEach(function (a) {
-                topojsonObject.objects.events.coordinates = [a];
-                svg.append("path")
-                    .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
-                    .attr("class", "points")
-                    .attr("stroke", airportBorder)
-                    .attr("fill", airportFill)
-                    .attr("d", path.pointRadius(function (d) {
-                        return 5;
-                    }))
-                    .on("mouseover", function (d) {
-                        var name = getObjectFromTopojson(d).name;
-                        $tooltip.text(name);
-                        $tooltip.show();
-                    })
-                    .on("mouseout", function (d) {
-                        $tooltip.fadeOut(250);
-                    })
-            });
+                .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
+                .attr("class", "points")
+                .attr("stroke", airportBorder)
+                .attr("fill", airportFill)
+                .attr("d", path.pointRadius(function (d) {
+                    return 5;
+                }))
+                .on("mouseover", function (d) {
+                    var name = getObjectFromTopojson(d).name;
+                    $tooltip.text(name);
+                    $tooltip.show();
+                })
+                .on("mouseout", function (d) {
+                    $tooltip.fadeOut(250);
+                })
         });
     }
 
@@ -190,41 +186,16 @@ function() {function Visualiser() {
         }
     }
 
-    function parseAirports(airports) {
-        var parsed = [];
-
-        for (var i = 0; i < airports.length; i++) {
-            var cur = airports[i];
-
-            if (!cur.lat || !cur.lon || cur.size != "large" || cur.status == 0 || cur.type != "airport") {
-                continue;
-            }
-
-            var item = [parseFloat(cur.lon), parseFloat(cur.lat), cur];
-
-            parsed.push(item);
-        }
-
-        return parsed;
-    }
-
-    function getAirportForCode(code) {
-        for (var i = 0; i < airports.length; i++) {
-            if (airports[i][2].iso == code || airports[i][2].iata == code) {
-                return airports[i];
-            }
-        }
-
-        return undefined;
-    }
-
     this.load = function () {
         loadJson();
     };
 
     this.showFlightPath = function (a1, a2) {
-        var ao1 = getAirportForCode(a1);
-        var ao2 = getAirportForCode(a2);
+        var ao1 = airports.getLocatedAirportForCode(a1);
+        var ao2 = airports.getLocatedAirportForCode(a2);
+
+        console.log(ao1);
+        console.log(ao2);
 
         registerFlightPath([ao1, ao2]);
     };
@@ -234,10 +205,13 @@ function() {function Visualiser() {
     }
 }
 
-var vis = new Visualiser();
-vis.load();
+var vis;
+var airports;
+var player;
 
-setTimeout(function() {
-    var player = new Player(vis);
-}, 1000);
-});
+function loaded() {
+    airports = new Airports(function() {
+        vis = new Visualiser();
+        player = new Player(vis);
+    });
+}
