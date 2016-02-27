@@ -4,6 +4,13 @@ var api = require('./js/api');
 var http = require('http');
 var request = require('request');
 var url = require('url');
+var nodeStatic = require('node-static');
+var util = require('util');
+
+var indexFile = new (nodeStatic.Server)("index.html", {
+    cache: 60,
+    headers: {'X-Powered-By': 'node-static'}
+});
 
 var server = http.createServer(function (req, res) {
     var params = url.parse(req.url, true);
@@ -11,8 +18,8 @@ var server = http.createServer(function (req, res) {
 
     // invalid params: serve site
     if (!apiUrl) {
-        // todo
-        console.log("serving static site");
+        console.log("trying to serve");
+        indexFile.serve(req, res);
         return;
     }
 
@@ -22,7 +29,7 @@ var server = http.createServer(function (req, res) {
     console.log("Requesting: " + apiUrl);
 
     // request
-    request(apiUrl, function(error, response, body) {
+    request(apiUrl, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             console.log("SUCCESS: " + body);
         }
