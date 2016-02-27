@@ -1,7 +1,8 @@
-function Player() {
+function Player(vis) {
     var $optionPanel = $("#option-panel");
     var $detailsPanel = $("#details-panel");
 
+    this.vis = vis;
     this.startAirport = "LGW";
     this.currentAirport = this.startAirport;
     this.money = 1000;
@@ -18,18 +19,19 @@ function Player() {
     this.getNextOptions = function() {
         // Return API call for next airports
         return [{
-            airport: "CHN",
+            airport: "CJU",
             cost: 126,
             time: 2 // in hours
         },
         {
-            airport: "CHN",
+            airport: "PUS",
             cost: 126,
             time: 2 // in hours
         }];
     };
 
     this.showOptions = function() {
+        // Set the option panel
         var options = this.getNextOptions();
         var all = $("<div></div>")
             .attr("class", "all-options");
@@ -70,6 +72,12 @@ function Player() {
 
         $optionPanel.text("");
         $optionPanel.append(all);
+
+        // Draw the lines
+        this.vis.clearFlightPaths();
+        for (var i = 0; i < options.length; i++) {
+            this.vis.showFlightPath(this.currentAirport, options[i].airport);
+        }
     };
 
     this.showDetails = function() {

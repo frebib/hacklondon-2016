@@ -81,6 +81,8 @@ function() {function Visualiser() {
 
             airports = parseAirports(rawAirports);
 
+            console.log(airports);
+
             airports.forEach(function (a) {
                 topojsonObject.objects.events.coordinates = [a];
                 svg.append("path")
@@ -100,8 +102,6 @@ function() {function Visualiser() {
                         $tooltip.fadeOut(250);
                     })
             });
-
-            randomFlightPath();
         });
     }
 
@@ -175,8 +175,10 @@ function() {function Visualiser() {
     }
 
     function getAirportForCode(code) {
+        console.log(airports.length);
+
         for (var i = 0; i < airports.length; i++) {
-            if (airports[i].iso == code) {
+            if (airports[i][2].iso == code || airports[i][2].iata == code) {
                 return airports[i];
             }
         }
@@ -189,15 +191,26 @@ function() {function Visualiser() {
     };
 
     this.showFlightPath = function (a1, a2) {
-        registerFlightPath(
-            getAirportForCode(a1),
-            getAirportForCode(a2)
-        );
+        var ao1 = getAirportForCode(a1);
+        var ao2 = getAirportForCode(a2);
+
+        console.log(a1);
+        console.log(a2);
+        console.log(ao1);
+        console.log(ao2);
+
+        registerFlightPath([ao1, ao2]);
+    };
+
+    this.clearFlightPaths = function() {
+        svg.selectAll(".flight-paths").remove();
     }
 }
 
 var vis = new Visualiser();
 vis.load();
 
-var player = new Player();
+setTimeout(function() {
+    var player = new Player(vis);
+}, 1000);
 });
