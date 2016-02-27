@@ -48,6 +48,11 @@ function Player() {
                     $("<div></div>")
                         .attr("class", "option-name")
                         .text(o.time + " hour" + (o.time == 1 ? "" : "s"))
+                )
+                .append(
+                    $("<button></button>")
+                        .attr("class", "option-buy")
+                        .text("Buy")
                 );
 
             all.append(container);
