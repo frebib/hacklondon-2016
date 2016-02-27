@@ -42,7 +42,7 @@ function() {function Visualiser() {
         svg.selectAll("path").attr("d", path);
     });
 
-    $("body").on("mousemove", function (e) {
+    $container.on("mousemove", function(e) {
         mousePosition = [e.screenX, e.screenY];
         $tooltip.css("top", mousePosition[1] - 140);
         $tooltip.css("left", mousePosition[0] - 15);
