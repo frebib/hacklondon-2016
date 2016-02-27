@@ -1,5 +1,6 @@
 function Player() {
     var $optionPanel = $("#option-panel");
+    var $detailsPanel = $("#details-panel");
 
     this.startAirport = "LGW";
     this.currentAirport = this.startAirport;
@@ -58,6 +59,7 @@ function Player() {
                         .text("Buy")
                         .click(function() {
                             obj.carryOutOption(o);
+                            obj.refresh();
                         })
                 );
 
@@ -66,6 +68,37 @@ function Player() {
 
         console.log($optionPanel);
 
+        $optionPanel.text("");
         $optionPanel.append(all);
-    }
+    };
+
+    this.showDetails = function() {
+        $detailsPanel.text("");
+
+        $detailsPanel
+            .append(
+                $("<div></div>")
+                    .attr("class", "details-current")
+                    .text(this.currentAirport)
+            )
+            .append(
+                $("<div></div>")
+                    .attr("class", "details-money")
+                    .text("£" + this.money)
+            )
+            .append(
+                $("<div></div>")
+                    .attr("class", "details-date")
+                    .text(this.date)
+            );
+
+        console.log("show details");
+    };
+
+    this.refresh = function() {
+        this.showDetails();
+        this.showOptions();
+    };
+
+    this.refresh();
 }
