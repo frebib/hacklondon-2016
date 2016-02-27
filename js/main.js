@@ -1,4 +1,5 @@
-$(function() {
+$(
+function() {function Visualiser() {
     var countryFill = "#b5b690";
     var countryBorder = "#46472b";
     var airportFill = "#46472b";
@@ -35,19 +36,17 @@ $(function() {
 
     console.log(svg);
 
-    svg.on("mouseup", function() {
+    svg.on("mouseup", function () {
         var p = d3.mouse(this);
         projection.rotate([scaleX(p[0]), scaleY(p[1])]);
         svg.selectAll("path").attr("d", path);
     });
 
-    $("body").on("mousemove", function(e) {
+    $("body").on("mousemove", function (e) {
         mousePosition = [e.screenX, e.screenY];
         $tooltip.css("top", mousePosition[1] - 140);
         $tooltip.css("left", mousePosition[0] - 15);
     });
-
-    loadJson();
 
     function loadJson() {
         var topojsonObject = {
@@ -65,7 +64,7 @@ $(function() {
             }
         };
 
-        d3.json("json/world-110m.json", function(error, world) {
+        d3.json("json/world-110m.json", function (error, world) {
             if (error) throw error;
 
             svg.append("path")
@@ -77,27 +76,27 @@ $(function() {
                 .attr("stroke-width", "0.1px");
         });
 
-        d3.json("json/airports.json", function(error, rawAirports) {
+        d3.json("json/airports.json", function (error, rawAirports) {
             if (error) throw error;
 
             airports = parseAirports(rawAirports);
 
-            airports.forEach(function(a) {
+            airports.forEach(function (a) {
                 topojsonObject.objects.events.coordinates = [a];
                 svg.append("path")
                     .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
                     .attr("class", "points")
                     .attr("stroke", airportBorder)
                     .attr("fill", airportFill)
-                    .attr("d", path.pointRadius(function(d) {
+                    .attr("d", path.pointRadius(function (d) {
                         return 5;
                     }))
-                    .on("mouseover", function(d) {
+                    .on("mouseover", function (d) {
                         var name = getObjectFromTopojson(d).name;
                         $tooltip.text(name);
                         $tooltip.show();
                     })
-                    .on("mouseout", function(d) {
+                    .on("mouseout", function (d) {
                         $tooltip.fadeOut(250);
                     })
             });
@@ -111,7 +110,7 @@ $(function() {
         var airport = airports[parseInt(Math.random() * airports.length)];
 
 
-        for (var i = 0; i < airports.length; i+= 5) {
+        for (var i = 0; i < airports.length; i += 5) {
             registerFlightPath([airport, airports[i]]);
         }
     }
@@ -128,7 +127,7 @@ $(function() {
                 flights: {
                     type: "GeometryCollection",
                     geometries: [
-                        { type: "Polygon", arcs: [[0]] }
+                        {type: "Polygon", arcs: [[0]]}
                     ]
                 }
             },
@@ -174,4 +173,30 @@ $(function() {
 
         return parsed;
     }
+
+    function getAirportForCode(code) {
+        for (var i = 0; i < airports.length; i++) {
+            if (airports[i].iso == code) {
+                return airports[i];
+            }
+        }
+
+        return undefined;
+    }
+
+    this.load = function () {
+        loadJson();
+    };
+
+    this.showFlightPath = function (a1, a2) {
+        registerFlightPath(
+            getAirportForCode(a1),
+            getAirportForCode(a2)
+        );
+    }
+}
+
+var vis = new Visualiser();
+vis.load();
+    
 });
