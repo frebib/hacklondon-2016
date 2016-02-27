@@ -4,7 +4,7 @@
   "dependencies": {
     "express": "latest",
     "connect": "latest",
-    "request": "latest",
-    "dotenv": "latest"
+    "dotenv": "latest",
+    "requestify": "latest"
   }
 }
