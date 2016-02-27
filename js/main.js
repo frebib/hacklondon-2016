@@ -1,6 +1,7 @@
 $(function() {
     var $container = $("body");
     var $tooltip = $("#tooltip");
+    var airports = [];
 
     var width = $container.width(),
         height = $container.height();
@@ -61,12 +62,12 @@ $(function() {
                 .attr("stroke", "red");
         });
 
-        d3.json("json/airports.json", function(error, airports) {
+        d3.json("json/airports.json", function(error, rawAirports) {
             if (error) throw error;
 
-            var parsed = parseAirports(airports);
+            airports = parseAirports(rawAirports);
 
-            parsed.forEach(function(a) {
+            airports.forEach(function(a) {
                 topojsonObject.objects.events.coordinates = [a];
                 svg.append("path")
                     .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
@@ -81,10 +82,24 @@ $(function() {
                         $tooltip.show();
                     })
             });
+
+            randomFlightPath();
         });
     }
 
-    registerFlightPath([[0, 0], [100, 100]]);
+
+    function randomFlightPath() {
+        var a1 = airports[parseInt(Math.random() * airports.length)];
+        var a2 = airports[parseInt(Math.random() * airports.length)];
+
+        console.log(a1[2].name);
+        console.log(a2[2].name);
+        
+        a2[0] = a2[0] - a1[0]; 
+        a2[1] = a2[1] - a1[1]; 
+
+        registerFlightPath([a1, a2]);
+    }
 
     function registerFlightPath(fp) {
         var test = {
