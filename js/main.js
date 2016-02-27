@@ -1,9 +1,11 @@
 $(function() {
-    var width = 960,
-        height = 500;
+    var $container = $("body");
+
+    var width = $container.width(),
+        height = $container.height();
 
     var projection = d3.geo.orthographic()
-        .scale(250)
+        .scale(400)
         .translate([width / 2, height / 2])
         .clipAngle(90);
 
