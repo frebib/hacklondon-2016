@@ -108,13 +108,12 @@ $(function() {
 
 
     function randomFlightPath() {
-        var a1 = airports[parseInt(Math.random() * airports.length)];
-        var a2 = airports[parseInt(Math.random() * airports.length)];
+        var airport = airports[parseInt(Math.random() * airports.length)];
 
-        console.log(a1[2].name);
-        console.log(a2[2].name);
 
-        registerFlightPath([a1, a2]);
+        for (var i = 0; i < airports.length; i+= 5) {
+            registerFlightPath([airport, airports[i]]);
+        }
     }
 
     function registerFlightPath(fp) {
