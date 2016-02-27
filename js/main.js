@@ -65,7 +65,7 @@ $(function() {
             }
         };
 
-        d3.json("json/world-50m.json", function(error, world) {
+        d3.json("json/world-110m.json", function(error, world) {
             if (error) throw error;
 
             svg.append("path")
