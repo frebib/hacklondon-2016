@@ -30,13 +30,35 @@ $(function() {
         svg.selectAll("path").attr("d", path);
     });
 
-    d3.json("json/world-50m.json", function(error, world) {
-        if (error) throw error;
+    loadJson();
 
-        svg.append("path")
-            .datum(topojson.feature(world, world.objects.countries))
-            .attr("class", "land")
-            .attr("d", path)
-            .attr("stroke", "red");
-    });
+    function loadJson() {
+        d3.json("json/world-50m.json", function(error, world) {
+            if (error) throw error;
+
+            svg.append("path")
+                .datum(topojson.feature(world, world.objects.countries))
+                .attr("class", "land")
+                .attr("d", path)
+                .attr("stroke", "red");
+        });
+
+        d3.json("json/airports.json", function(error, airports) {
+            if (error) throw error;
+
+            parseAirports(airports);
+
+            svg.selectAll("circle")
+                .data([aa,bb]).enter()
+                .append("circle")
+                .attr("cx", function (d) { console.log(projection(d)); return projection(d)[0]; })
+                .attr("cy", function (d) { return projection(d)[1]; })
+                .attr("r", "8px")
+                .attr("fill", "red")
+        });
+    }
+
+    function parseAirports(airports) {
+        
+    }
 });
