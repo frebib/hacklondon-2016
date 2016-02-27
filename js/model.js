@@ -4,12 +4,14 @@ function Player() {
     this.startAirport = "LGW";
     this.currentAirport = this.startAirport;
     this.money = 1000;
-    this.date = Date.now();
+    this.date = new Date();
 
     this.carryOutOption = function(option) {
         this.currentAirport = option.airport;
         this.money -= option.cost;
         this.date.setTime(this.date.getTime() + option.time * 60 * 60 * 1000);
+
+        console.log(this);
     };
 
     this.getNextOptions = function() {
@@ -31,6 +33,7 @@ function Player() {
         var all = $("<div></div>")
             .attr("class", "all-options");
 
+        var obj = this;
         options.forEach(function(o) {
             var container = $("<div></div>")
                 .attr("class", "option-container")
@@ -53,6 +56,9 @@ function Player() {
                     $("<button></button>")
                         .attr("class", "option-buy")
                         .text("Buy")
+                        .click(function() {
+                            obj.carryOutOption(o);
+                        })
                 );
 
             all.append(container);
