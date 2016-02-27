@@ -24,7 +24,7 @@ $(function() {
 
     console.log(svg);
 
-    svg.on("mousemove", function() {
+    svg.on("mouseup", function() {
         var p = d3.mouse(this);
         projection.rotate([scaleX(p[0]), scaleY(p[1])]);
         svg.selectAll("path").attr("d", path);
@@ -34,8 +34,9 @@ $(function() {
         if (error) throw error;
 
         svg.append("path")
-            .datum(topojson.feature(world, world.objects.land))
+            .datum(topojson.feature(world, world.objects.countries))
             .attr("class", "land")
-            .attr("d", path);
+            .attr("d", path)
+            .attr("stroke", "red");
     });
 });
