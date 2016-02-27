@@ -3,16 +3,16 @@
  */
 exports.parseGetParams = function(params) {
 
-    if (!params || !params.query || !params.query['api'])
+    if (!params || !params['api'])
         return;
 
-    var apiCall = params.query['api'].trim();
+    var apiCall = params['api'].trim();
     var apiUrl;
 
     if (apiCall === 'getFlights') {
 
-        var dateParam = params.query['date'];
-        var cityParam = params.query['city'];
+        var dateParam = params['date'];
+        var cityParam = params['city'];
         if (!dateParam || !cityParam)
             return;
 

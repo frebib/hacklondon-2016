@@ -1,0 +1,10 @@
+{
+  "name": "Airbourne",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "latest",
+    "connect": "latest",
+    "request": "latest",
+    "dotenv": "latest"
+  }
+}

@@ -1,25 +1,22 @@
 require('dotenv').config();
 var connect = require('connect');
-var api = require('./js/api');
+var api = require('./public/js/api');
 var http = require('http');
 var request = require('request');
 var url = require('url');
-var nodeStatic = require('node-static');
 var util = require('util');
+var express = require('express');
 
-var indexFile = new (nodeStatic.Server)("index.html", {
-    cache: 60,
-    headers: {'X-Powered-By': 'node-static'}
-});
+var app = express();
 
-var server = http.createServer(function (req, res) {
-    var params = url.parse(req.url, true);
-    var apiUrl = api.parseGetParams(params);
+// static content
+app.use(express.static(__dirname + '/public'));
 
-    // invalid params: serve site
+// api
+app.get('/api/', function (req, res) {
+    var apiUrl = api.parseGetParams(req.query);
     if (!apiUrl) {
-        console.log("trying to serve");
-        indexFile.serve(req, res);
+        res.status(404).send("{}");
         return;
     }
 
@@ -29,16 +26,19 @@ var server = http.createServer(function (req, res) {
     console.log("Requesting: " + apiUrl);
 
     // request
-    request(apiUrl, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            console.log("SUCCESS: " + body);
-        }
-        else {
-            console.log("FAILURE (" + response.statusCode + ")");
-        }
+    request(apiUrl, function (error, apiResponse, body) {
+        res.sendStatus = apiResponse.statusCode;
+        console.log("API response: " + apiResponse.statusCode);
+        if (apiResponse.statusCode == 200)
+            res.write(body);
+        else
+            res.write("API returned " + apiResponse.statusCode);
 
+        res.end();
     });
 
 });
 
-server.listen(8080);
+
+app.listen(8080);
+
