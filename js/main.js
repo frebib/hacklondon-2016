@@ -198,5 +198,7 @@ function() {function Visualiser() {
 
 var vis = new Visualiser();
 vis.load();
-    
+
+var player = new Player();
+player.showOptions();
 });
