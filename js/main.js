@@ -1,5 +1,6 @@
 $(function() {
     var $container = $("body");
+    var $tooltip = $("#tooltip");
 
     var width = $container.width(),
         height = $container.height();
@@ -73,9 +74,22 @@ $(function() {
                     .attr("stroke", "white")
                     .attr("d", path.pointRadius(function(d) {
                         return 5;
-                    }));
+                    }))
+                    .on("mouseover", function(d) {
+                        var name = getObjectFromTopojson(d).name;
+                        $tooltip.text(name);
+                        $tooltip.show();
+                    })
             });
         });
+    }
+
+    function getObjectFromTopojson(tj) {
+        try {
+            return tj.geometry.coordinates[0][2]
+        } catch (e) {
+            return undefined;
+        }
     }
 
     function parseAirports(airports) {
