@@ -82,7 +82,7 @@ function Visualiser() {
 
     load();
 
-    function loadg() {
+    function load() {
         d3.json("json/world-110m.json", function (error, world) {
             if (error) throw error;
 
