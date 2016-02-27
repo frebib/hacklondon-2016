@@ -34,8 +34,6 @@ function() {function Visualiser() {
         .attr("width", width)
         .attr("height", height);
 
-    console.log(svg);
-
     svg.on("mouseup", function () {
         var p = d3.mouse(this);
         projection.rotate([scaleX(p[0]), scaleY(p[1])]);
@@ -80,8 +78,6 @@ function() {function Visualiser() {
             if (error) throw error;
 
             airports = parseAirports(rawAirports);
-
-            console.log(airports);
 
             airports.forEach(function (a) {
                 topojsonObject.objects.events.coordinates = [a];
@@ -175,8 +171,6 @@ function() {function Visualiser() {
     }
 
     function getAirportForCode(code) {
-        console.log(airports.length);
-
         for (var i = 0; i < airports.length; i++) {
             if (airports[i][2].iso == code || airports[i][2].iata == code) {
                 return airports[i];
@@ -193,11 +187,6 @@ function() {function Visualiser() {
     this.showFlightPath = function (a1, a2) {
         var ao1 = getAirportForCode(a1);
         var ao2 = getAirportForCode(a2);
-
-        console.log(a1);
-        console.log(a2);
-        console.log(ao1);
-        console.log(ao2);
 
         registerFlightPath([ao1, ao2]);
     };
