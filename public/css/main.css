@@ -4,5 +4,26 @@
 }
 
 body {
-    font-family: Verdana, SansSerif, serif;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+#option-panel{
+    float: left;
+    padding: 50px;
+    border: 2px solid #bfbfbf;
+    border-radius: 20px;
+    background-color: #e6e6e6;
+    white-space:nowrap;
+    display:inline-block;
+    width: 200px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.option-container{
+    padding: 10px 0px;
+    text-align: center;
+}
+.option-container > div{
+    padding: 8px;
 }
