@@ -113,14 +113,16 @@ $(function() {
 
         console.log(a1[2].name);
         console.log(a2[2].name);
-        
-        a2[0] = a2[0] - a1[0]; 
-        a2[1] = a2[1] - a1[1]; 
 
         registerFlightPath([a1, a2]);
     }
 
     function registerFlightPath(fp) {
+        for (var i = 1; i < fp.length; i++) {
+            fp[i][0] = fp[i][0] - fp[0][0];
+            fp[i][1] = fp[i][1] - fp[0][1];
+        }
+
         var test = {
             type: "Topology",
             objects: {
