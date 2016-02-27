@@ -33,6 +33,21 @@ $(function() {
     loadJson();
 
     function loadJson() {
+        var topojsonObject = {
+            type: "Topology",
+            objects: {
+                events: {
+                    type: "MultiPoint",
+                    coordinates: []
+                }
+            },
+            arcs: [],
+            transform: {
+                scale: [1, 1],
+                translate: [0, 0]
+            }
+        };
+
         d3.json("json/world-50m.json", function(error, world) {
             if (error) throw error;
 
@@ -46,19 +61,37 @@ $(function() {
         d3.json("json/airports.json", function(error, airports) {
             if (error) throw error;
 
-            parseAirports(airports);
+            var parsed = parseAirports(airports);
 
-            svg.selectAll("circle")
-                .data([aa,bb]).enter()
-                .append("circle")
-                .attr("cx", function (d) { console.log(projection(d)); return projection(d)[0]; })
-                .attr("cy", function (d) { return projection(d)[1]; })
-                .attr("r", "8px")
-                .attr("fill", "red")
+            parsed.forEach(function(a) {
+                console.log(a);
+                topojsonObject.objects.events.coordinates = [a];
+                svg.append("path")
+                    .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
+                    .attr("class", "points")
+                    .attr("stroke", "white")
+                    .attr("d", path.pointRadius(function(d) {
+                        return 5;
+                    }));
+            });
         });
     }
 
     function parseAirports(airports) {
-        
+        var parsed = [];
+
+        for (var i = 0; i < airports.length; i++) {
+            var cur = airports[i];
+
+            if (!cur.lat || !cur.lon || cur.size != "large" || cur.status == 0 || cur.type != "airport") {
+                continue;
+            }
+
+            var item = [parseInt(cur.lon), parseInt(cur.lat), cur];
+
+            parsed.push(item);
+        }
+
+        return parsed;
     }
 });
