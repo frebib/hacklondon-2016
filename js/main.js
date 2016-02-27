@@ -144,6 +144,7 @@ $(function() {
             .datum(topojson.feature(test, test.objects.flights))
             .attr("class", "flight-path")
             .attr("d", path)
+            .attr("stroke-width", "3px")
             .attr("stroke", "blue");
     }
 
