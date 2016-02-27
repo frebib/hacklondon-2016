@@ -89,7 +89,7 @@ $(function() {
                 continue;
             }
 
-            var item = [parseInt(cur.lon), parseInt(cur.lat), cur];
+            var item = [parseFloat(cur.lon), parseFloat(cur.lat), cur];
 
             parsed.push(item);
         }
