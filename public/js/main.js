@@ -209,9 +209,9 @@ var vis;
 var airports;
 var player;
 
-function loaded() {
+$(window).load(function() {
     airports = new Airports(function() {
         vis = new Visualiser();
         player = new Player(vis);
     });
-}
+});
