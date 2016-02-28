@@ -43,7 +43,7 @@ function Player(vis) {
     this.carryOutOption = function (option) {
         this.visitedAirport(option.airport);
         this.money -= option.cost;
-        this.date.setTime(this.date.getTime() + option.time * 60 * 60 * 1000);
+        this.date.setTime(new Date(option.departureTime).getTime() + (option.time * 60 * 1000));
 
         if (this.money < 0) {
             gameEnded(this);
