@@ -17,7 +17,7 @@ function gameEnded(player) {
     console.log("end");
 
     $("#end-infections").text(formatNumber(player.amountInfected()));
-    $("#end-time").text(((player.startDate.getTime() - player.date.getTime()) / 1000 / 60 / 60).toFixed(2));
+    $("#end-time").text(((player.date.getTime() - player.startDate.getTime()) / 1000 / 60 / 60 / 24).toFixed(2));
 }
 
 $(function(){

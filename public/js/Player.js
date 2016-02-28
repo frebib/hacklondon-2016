@@ -7,7 +7,7 @@ function Player(vis) {
     this.airportHistory = [];
     this.money = 14300;
     this.startDate = new Date();
-    this.date = this.startDate;
+    this.date = new Date(this.startDate.getTime());
     var minuteLength = 1;
     this.date.setMonth(this.date.getMonth() + 1);
     this.countries = {};
