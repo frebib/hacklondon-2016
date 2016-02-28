@@ -19,10 +19,11 @@ body {
     top: 20px;
     left: 20px;
     width: 500px;
+    height: calc(100% - 80px);
     background-color: #e6e6e6;
     border: 0px solid black;
     border-radius: 20px;
-    padding: 20 30px;
+    padding: 20px 30px;
     display: none;
 }
 #sidebar p{
