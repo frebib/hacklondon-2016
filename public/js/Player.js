@@ -122,11 +122,11 @@ function Player(vis) {
         $(".details-current")
             .text(this.currentAirport());
         $(".details-money")
-            .text("£" + this.money);
+            .text("Money left: £" + this.money);
         $(".details-date")
             .text(formatDateForDisplay(this.date));
         $(".details-infected")
-            .text(this.amountInfected());
+            .text("People infected: " + formatNumber(this.amountInfected()));
     };
 
     this.refresh = function() {
@@ -143,7 +143,9 @@ function Player(vis) {
 
         for (var key in this.countries) {
             if (this.countries.hasOwnProperty(key)) {
-                total += this.countries[key];
+                if (this.countries[key]) {
+                    total += this.countries[key];
+                }
             }
         }
 
@@ -170,4 +172,15 @@ function formatDateForAPI(date) {
 function formatDateForDisplay(date) {
     var s = date.toString().split(" ");
     return s[4] + " - " + s[2] + " " + s[1] + " " + s[3];
+}
+
+function formatNumber(n) {
+    var exts = ["", "thousand", "million", "billion"];
+    var i = 0;
+    while (n > 1000 && i < exts.length) {
+        n /= 1000;
+        i ++;
+    }
+
+    return n.toFixed(3) + " " + exts[i];
 }
