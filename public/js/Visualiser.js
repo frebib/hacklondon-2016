@@ -15,11 +15,12 @@ function Visualiser(onLoad) {
     var isMouseDown = false;
     var mouseDownLocation = {x: 0, y: 0};
     var globeRotation = {x: 670, y: 400};
+    var centre = [width / 2 + $("#sidebar").width() / 2, height / 2];
 
 
     var projection = d3.geo.orthographic()
         .scale(400)
-        .translate([width / 2, height / 2])
+        .translate(centre)
         .clipAngle(90);
 
     var path = d3.geo.path()
@@ -90,8 +91,8 @@ function Visualiser(onLoad) {
             var opacity = i / 40;
 
             svg.append("circle")
-                .attr("cx", width / 2)
-                .attr("cy", height / 2)
+                .attr("cx", centre[0])
+                .attr("cy", centre[1])
                 .attr("r", radius)
                 .attr("fill", rg + color + ")")
                 .attr("stroke", rg + color + ")")
@@ -99,8 +100,8 @@ function Visualiser(onLoad) {
         }
 
         svg.append("circle")
-            .attr("cx", width / 2)
-            .attr("cy", height / 2)
+            .attr("cx", centre[0])
+            .attr("cy", centre[1])
             .attr("r", radius)
             .attr("fill", rg  +" 255)")
             .attr("stroke", rg + " 255)")
