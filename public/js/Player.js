@@ -82,12 +82,12 @@ function Player(vis) {
                     .append(
                         $("<td></td>")
                             .attr("class", "option-start")
-                            .text("11:00:00 1/2/2012")
+                            .text(formatDateForDisplay(new Date(o.departureTime)))
                     )
                     .append(
                         $("<td></td>")
-                            .attr("class", "option-start")
-                            .text("01:00:00 1/2/2012")
+                            .attr("class", "option-time")
+                            .text(o.time + " hour" + (o.time == 1 ? "" : "s"))
                     )
                     .append(
                         $("<td></td>").append(
