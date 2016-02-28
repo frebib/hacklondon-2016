@@ -43,7 +43,7 @@ body {
 }
 #options-panel-content{
     margin: auto;
-    height: 75%;
+    height: 700px;
     overflow: scroll;
     overflow-x:hidden;
 }
@@ -83,7 +83,6 @@ body {
     color: #880000;
 }
 .game-message {
-    /*position: absolute;*/
     margin: 0 auto;
     padding: 100px;
     background-color: rgba(200, 200, 200, 0.8);
