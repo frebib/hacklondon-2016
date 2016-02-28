@@ -12,39 +12,39 @@ function Player(vis) {
     this.date.setMonth(this.date.getMonth() + 1);
     this.countries = {};
 
-    this.logicalTick = function() {
+    this.logicalTick = function () {
         this.showOptions();
     };
 
 
-    this.timeTick = function() {
+    this.timeTick = function () {
         this.date.setTime(this.date.getTime() + 1000);
 
         this.showDetails();
     };
 
 
-    this.setupTicks = function() {
+    this.setupTicks = function () {
         var obj = this;
 
-        setInterval(function() {
+        setInterval(function () {
             obj.logicalTick();
         }, 500);
 
-        setInterval(function() {
+        setInterval(function () {
             obj.timeTick();
         }, secondLength);
     };
 
     this.setupTicks();
 
-    this.carryOutOption = function(option) {
+    this.carryOutOption = function (option) {
         this.visitedAirport(option.airport);
         this.money -= option.cost;
         this.date.setTime(this.date.getTime() + option.time * 60 * 60 * 1000);
     };
 
-    this.getNextOptions = function(callback) {
+    this.getNextOptions = function (callback) {
         // Return API call for next airports
         $.getJSON({
             url: "/api",
@@ -79,14 +79,12 @@ function Player(vis) {
         }
 
         var dist = distance(srcAirport.lat, srcAirport.lon, dstAirport.lat, dstAirport.lon, 'K');
+
+        if (!dist)
+            return 30; // default
+
         var planeSpeed = 893; // km/h
-
-        var time = planeSpeed / dist;
-
-        // hours to minutes
-        time *= 60;
-
-        return time
+        return dist / planeSpeed * 60; // hours to minutes
     }
 
     this.showOptions = function () {
@@ -155,7 +153,7 @@ function Player(vis) {
         this.getNextOptions(callback);
     };
 
-    this.showDetails = function() {
+    this.showDetails = function () {
         var airport = airports.getLocatedAirportForCode(this.currentAirport());
 
         $(".details-current")
@@ -168,16 +166,16 @@ function Player(vis) {
             .text("Infected: " + formatNumber(this.amountInfected()));
     };
 
-    this.refresh = function() {
+    this.refresh = function () {
         this.showDetails();
         this.showOptions();
     };
 
-    this.currentAirport = function() {
+    this.currentAirport = function () {
         return this.airportHistory[this.airportHistory.length - 1];
     };
 
-    this.amountInfected = function() {
+    this.amountInfected = function () {
         var total = 0;
 
         for (var key in this.countries) {
@@ -191,7 +189,7 @@ function Player(vis) {
         return total;
     };
 
-    this.visitedAirport = function(code) {
+    this.visitedAirport = function (code) {
         this.airportHistory.push(code);
         var airport = airports.getLocatedAirportForCode(code);
         this.countries[airport[2].iso] = airport[2].population;
@@ -220,7 +218,7 @@ function formatNumber(n) {
     var i = 0;
     while (n > 1000 && i < exts.length) {
         n /= 1000;
-        i ++;
+        i++;
     }
 
     return n.toFixed(3) + " " + exts[i];
