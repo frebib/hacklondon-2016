@@ -82,7 +82,7 @@ function Visualiser(onLoad) {
     });
 
     function setupOzone() {
-        var rg = "rgb(51, 153, ";
+        var rg = "rgb(0, 153, ";
 
         for (var i = 0; i < 10; i++) {
             var color = parseInt(170 + ((i / 10) * 40));
