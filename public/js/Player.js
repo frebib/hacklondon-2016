@@ -12,6 +12,7 @@ function Player(vis) {
     this.countries = {};
     this.lastTime = new Date();
     this.timeInterval = 0;
+    this.flightData = [];
 
     this.timeTick = function () {
         var diff = new Date().getTime() - this.lastTime;
@@ -88,106 +89,103 @@ function Player(vis) {
     this.showOptions = function () {
         var obj = this;
 
-        if (this.date < this.nextFetch)
-            return;
+        if (this.date >= this.nextFetch) {
+            this.nextFetch = new Date(this.date.getTime() + 1000 * 60 * 60 * 24 * 14);
 
-        this.nextFetch = new Date(this.date.getTime() + 1000 * 60 * 60 * 24 * 14);
-
-        console.log(this.date.getMonth());
-        console.log(this.nextFetch);
-
-        function callback(options) {
-            options = options.filter(function(o) {
-                return new Date(o.departureTime).getTime() > obj.date.getTime();
-            }).sort(function (o1, o2) {
-                return new Date(o1.departureTime).getTime() - new Date(o2.departureTime).getTime();
-            }).slice(0, 5);
-
-            // Set the option panel
-            var all = $("<table></table>")
-                .attr("class", "all-options");
-
-
-            options.forEach(function (o) {
-                try {
-                    var dstAirport = airports.getLocatedAirportForCode(o.airport)[2];
-                    var srcAirport = airports.getLocatedAirportForCode(obj.currentAirport())[2];
-                } catch(e) {
-                    return;
-                }
-
-                o.time = calculateTime(srcAirport, dstAirport);
-
-                var container = $("<tr></tr>")
-                    .attr("class", "option-container")
-                    .append(
-                        $("<td></td>")
-                            .attr("class", "option-name")
-                            .text(dstAirport.name + ", " + dstAirport.country)
-                    )
-                    .append(
-                        $("<td></td>")
-                            .attr("class", "option-cost")
-                            .text("£" + o.cost)
-                    )
-                    .append(
-                        $("<td></td>")
-                            .attr("class", "option-start")
-                            .text(formatDateForDisplay(new Date(o.departureTime)))
-                    )
-                    .append(
-                        $("<td></td>")
-                            .attr("class", "option-time")
-                            .text(o.time.toFixed(0) + " minutes")
-                    )
-                    .append(
-                        $("<td></td>").append(
-                            $("<button></button>")
-                                .attr("class", "option-buy")
-                                .text("Buy")
-                                .click(function () {
-                                    obj.carryOutOption(o);
-                                    obj.timeTick();
-                                    obj.vis.panToAirport(o.airport);
-                                })
-                        )
-                    );
-
-                all.append(container);
-            });
-
-            obj.$optionPanel.text("");
-            obj.$optionPanel.append(all);
-
-            if (options.length == 0 && obj.money > 0) {
-                obj.$optionPanel
-                    .html("<div>Waiting for more flights...</div>");
-                obj.$optionPanel
-                    .append(
-                        $("<button>Go forward a day</button>")
-                            .attr("class", "game-button")
-                            .click(function() {
-                                obj.date.setTime(obj.date.getTime() + 1000 * 60 * 60 * 24);
-                            })
-                    )
-                    .append($("<br/>"))
-                    .append(
-                        $("<button>Replay</button>")
-                            .attr("class", "game-button")
-                            .click(function() {
-                                gameEnded(obj);
-                            })
-                    )
-            }
-
-            // Draw the lines
-            obj.vis.clearFlightPaths();
-            for (var i = 0; i < options.length; i++) {
-                obj.vis.showFlightPath(obj.currentAirport(), options[i].airport);
-            }
+            var callback = function(options) {
+                obj.flightData = options.filter(function (o) {
+                    return new Date(o.departureTime).getTime() > obj.date.getTime();
+                }).sort(function (o1, o2) {
+                    return new Date(o1.departureTime).getTime() - new Date(o2.departureTime).getTime();
+                });
+            };
+            this.getNextOptions(callback);
         }
 
-        this.getNextOptions(callback);
+        //this.flightData.filter(function (o) {
+        //    return new Date(o.departureTime).getTime() > obj.date.getTime();
+        //});
+
+        // Set the option panel
+        var all = $("<ol>").attr("class", "all-options");
+
+        this.flightData.slice(0, 10).forEach(function (o) {
+            try {
+                var dstAirport = airports.getLocatedAirportForCode(o.airport)[2];
+                var srcAirport = airports.getLocatedAirportForCode(obj.currentAirport())[2];
+            } catch(e) {
+                return;
+            }
+
+            o.time = calculateTime(srcAirport, dstAirport);
+
+            var container = $("<li>")
+                .attr("class", "option-container")
+                .append(
+                    $("<div>")
+                        .attr("class", "option-name")
+                        .text(dstAirport.name + ", " + dstAirport.country)
+                )
+                .append(
+                    $("<div>")
+                        .attr("class", "option-cost")
+                        .text("£" + o.cost)
+                )
+                .append(
+                    $("<div>")
+                        .attr("class", "option-start")
+                        .text(formatDateForDisplay(new Date(o.departureTime)))
+                )
+                .append(
+                    $("<div>")
+                        .attr("class", "option-time")
+                        .text(o.time.toFixed(0) + " minutes")
+                )
+                .append(
+                    $("<div>").append(
+                        $("<button></button>")
+                            .attr("class", "option-buy")
+                            .text("Buy")
+                            .click(function () {
+                                obj.carryOutOption(o);
+                                obj.timeTick();
+                                obj.vis.panToAirport(o.airport);
+                            })
+                    )
+                );
+
+            all.append(container);
+        });
+
+        obj.$optionPanel.empty();
+        obj.$optionPanel.append(all);
+
+        if (this.flightData.length == 0 && obj.money > 0) {
+            obj.$optionPanel
+                .html("<div>Waiting for more flights...</div>");
+            obj.$optionPanel
+                .append(
+                    $("<button>Go forward a day</button>")
+                        .attr("class", "game-button")
+                        .click(function() {
+                            obj.date.setTime(obj.date.getTime() + 1000 * 60 * 60 * 24);
+                        })
+                )
+                .append($("<br/>"))
+                .append(
+                    $("<button>Replay</button>")
+                        .attr("class", "game-button")
+                        .click(function() {
+                            gameEnded(obj);
+                        })
+                )
+        }
+
+        // Draw the lines
+        obj.vis.clearFlightPaths();
+        for (var i = 0; i < this.flightData.length; i++) {
+            obj.vis.showFlightPath(obj.currentAirport(), this.flightData[i].airport);
+        }
     };
 
     this.showDetails = function () {
