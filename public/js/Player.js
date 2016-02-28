@@ -3,9 +3,9 @@ function Player(vis) {
     this.$detailsPanel = $("#details-panel-content");
 
     this.vis = vis;
-    this.startAirport = "LGW";
+    this.startAirport = "KEF";
     this.airportHistory = [];
-    this.money = 1;
+    this.money = 14300;
     this.startDate = new Date();
     this.date = this.startDate;
     var secondLength = 1;
