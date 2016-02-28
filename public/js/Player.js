@@ -99,6 +99,10 @@ function Player(vis) {
         var obj = this;
 
         function callback(options) {
+            var options = options.filter(function(o) {
+                return new Date(o.departureTime).getTime() > obj.date.getTime();
+            });
+
             // Set the option panel
             var all = $("<table></table>")
                 .attr("class", "all-options");
