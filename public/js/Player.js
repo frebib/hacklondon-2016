@@ -75,7 +75,7 @@ function Player(vis) {
                     .append(
                         $("<td></td>")
                             .attr("class", "option-name")
-                            .text(o.airport)
+                            .text("Nick's Rad Airport")
                     )
                     .append(
                         $("<td></td>")
@@ -84,8 +84,13 @@ function Player(vis) {
                     )
                     .append(
                         $("<td></td>")
-                            .attr("class", "option-time")
-                            .text(o.time + " hour" + (o.time == 1 ? "" : "s"))
+                            .attr("class", "option-start")
+                            .text("11:00:00 1/2/2012")
+                    )
+                    .append(
+                        $("<td></td>")
+                            .attr("class", "option-start")
+                            .text("01:00:00 1/2/2012")
                     )
                     .append(
                         $("<td></td>").append(
