@@ -21,7 +21,7 @@ function Player(vis) {
             data: {
                 que: "getConnections",
                 from: this.currentAirport,
-                date: formatDate(this.date)
+                date: formatDateForAPI(this.date)
             },
             success: callback
         });
@@ -98,7 +98,7 @@ function Player(vis) {
             .append(
                 $("<div></div>")
                     .attr("class", "details-date")
-                    .text(formatDate(this.date))
+                    .text(formatDateForDisplay(this.date))
             );
     };
 
@@ -110,9 +110,12 @@ function Player(vis) {
     this.refresh();
 }
 
-function formatDate(date) {
+function formatDateForAPI(date) {
     return date.getFullYear() + "-"
         + ('0' + (date.getMonth() + 1)).slice(-2) + "-"
         + ('0' + date.getDate()).slice(-2);
 }
 
+function formatDateForDisplay(date) {
+    return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+}
