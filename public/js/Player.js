@@ -8,19 +8,34 @@ function Player(vis) {
     this.money = 1000;
     this.startDate = new Date();
     this.date = this.startDate;
-    var dateIncrement = 60 * 60;
+    var secondLength = 10;
     this.date.setMonth(this.date.getMonth() + 1);
 
-    this.tick = function() {
-        this.date.setTime(this.date.getTime() + dateIncrement);
-
-        this.refresh();
+    this.logicalTick = function() {
+        this.showOptions();
     };
 
-    var obj = this;
-    setInterval(function() {
-        obj.tick();
-    }, 500);
+
+    this.timeTick = function() {
+        this.date.setTime(this.date.getTime() + 1000);
+
+        this.showDetails();
+    };
+
+
+    this.setupTicks = function() {
+        var obj = this;
+
+        setInterval(function() {
+            obj.logicalTick();
+        }, 500);
+
+        setInterval(function() {
+            obj.timeTick();
+        }, secondLength);
+    };
+
+    this.setupTicks();
 
     this.carryOutOption = function(option) {
         this.airportHistory.push(option.airport);
