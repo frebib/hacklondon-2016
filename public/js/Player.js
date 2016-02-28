@@ -34,7 +34,6 @@ function Player(vis) {
             var all = $("<div></div>")
                 .attr("class", "all-options");
 
-            var obj = obj;
             options.forEach(function(o) {
                 var container = $("<div></div>")
                     .attr("class", "option-container")
