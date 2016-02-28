@@ -18,7 +18,7 @@ function Visualiser(onLoad) {
     var globeRotation = {x: 670, y: 400};
     var centre = [width / 2 + $("#sidebar").width() / 2, height / 2];
     var scale = height / 2 - 50;
-    var panSpeed = 0.1;
+    var panSpeed = 0.5;
 
     var projection = d3.geo.orthographic()
         .scale(scale)
@@ -152,13 +152,6 @@ function Visualiser(onLoad) {
 
     this.load();
 
-    this.loadAirports = function() {
-        var obj = this;
-        airports.filteredAirports.forEach(function (a) {
-            obj.addAirport(airports.toTopojson(a));
-        });
-    };
-
     this.addAirport = function(a) {
         var topojsonObject = {
             type: "Topology",
@@ -179,10 +172,9 @@ function Visualiser(onLoad) {
         svg.append("path")
             .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
             .attr("id", "airport-" + a[2].iata)
-            .attr("class", "points")
+            .attr("class", "points country-" + a[2].iso)
             .attr("stroke", airportBorder)
             .attr("fill", airportFill)
-            .attr("opacity", 0.8)
             .attr("d", path.pointRadius(function (d) {
                 return 5;
             }))
@@ -285,9 +277,17 @@ function Visualiser(onLoad) {
 
     this.highlight = function(airport) {
         $(".points")
-            .attr("fill", airportFill);
+            .attr("stroke-width", "1px");
 
         $("#airport-" + airport[2].iata)
-            .attr("fill", airportHighlighted);
+            .attr("stroke-width", "5px");
+    };
+
+    this.countryInfected = function(iso) {
+        console.log("Infected: " + iso);
+        svg.selectAll(".country-" + iso)
+            .attr("fill", "black");
+
+        svg.selectAll(".point").attr("d", path);
     }
 }

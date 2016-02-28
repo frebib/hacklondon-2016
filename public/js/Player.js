@@ -156,6 +156,8 @@ function Player(vis) {
         this.airportHistory.push(code);
         var airport = airports.getLocatedAirportForCode(code);
         this.countries[airport[2].iso] = airport[2].population;
+
+        vis.countryInfected(airport[2].iso);
     };
 
     this.visitedAirport(this.startAirport);
