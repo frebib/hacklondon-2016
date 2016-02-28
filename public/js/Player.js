@@ -119,14 +119,16 @@ function Player(vis) {
     };
 
     this.showDetails = function() {
+        var airport = airports.getLocatedAirportForCode(this.currentAirport());
+
         $(".details-current")
-            .text(this.currentAirport());
+            .text(airport[2].name);
         $(".details-money")
-            .text("Money left: £" + this.money);
+            .text("£" + this.money);
         $(".details-date")
             .text(formatDateForDisplay(this.date));
         $(".details-infected")
-            .text("People infected: " + formatNumber(this.amountInfected()));
+            .text("Infected: " + formatNumber(this.amountInfected()));
     };
 
     this.refresh = function() {
