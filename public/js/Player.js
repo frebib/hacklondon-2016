@@ -5,7 +5,7 @@ function Player(vis) {
     this.vis = vis;
     this.startAirport = "LGW";
     this.airportHistory = [];
-    this.money = 1000;
+    this.money = 14300;
     this.startDate = new Date();
     this.date = this.startDate;
     var secondLength = 1;
