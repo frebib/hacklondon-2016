@@ -17,7 +17,7 @@ body {
     float: left;
     top: 10;
     left: 10;
-    width: 400px;
+    width: 500px;
     background-color: #e6e6e6;
     border: 0px solid black;
     border-radius: 20px;
@@ -41,20 +41,6 @@ body {
 #option-panel > div{
     padding: 5px 0;
 }
-/*#details-panel-content{*/
-/*display: table;*/
-/*}*/
-/*.option-name, .option-cost, .option-time, .option-buy {*/
-    /*display: table-cell;*/
-/*}*/
-
-/*.option-container {*/
-    /*display: table-row;*/
-/*}*/
-/*.option-name{*/
-    /*border-top: 1px solid black;*/
-    /*border-bottom: 1px solid black;*/
-/*}*/
 .option-container{
     padding: 10px 0px;
     text-align: center;
