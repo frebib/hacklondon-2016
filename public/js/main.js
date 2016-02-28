@@ -49,7 +49,8 @@ function Visualiser(onLoad) {
         .attr("cx", width / 2)
         .attr("cy", height / 2)
         .attr("r", 400)
-        .attr("fill", "#66b3ff");
+        .attr("fill", "#66b3ff")
+        .attr("stroke", "#333");
 
     $svg.on("mousemove", function(e) {
         if (!isMouseDown)
