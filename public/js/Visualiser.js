@@ -4,8 +4,10 @@ function Visualiser(onLoad) {
     var countryBorder = "#46472b";
     var airportFill = "#cc3300";
     var airportBorder = "#992600";
+    var airportHighlighted = "#FFFFFF";
 
     var mousePosition = [];
+    var highlighted = undefined;
 
     var $container = $("body");
     var $tooltip = $("#tooltip");
@@ -176,6 +178,7 @@ function Visualiser(onLoad) {
         //topojsonObject.objects.events.coordinates = [a];
         svg.append("path")
             .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
+            .attr("id", "airport-" + a[2].iata)
             .attr("class", "points")
             .attr("stroke", airportBorder)
             .attr("fill", airportFill)
@@ -260,6 +263,7 @@ function Visualiser(onLoad) {
 
     this.panToAirport = function(code) {
         var airport = airports.getLocatedAirportForCode(code);
+        this.highlight(airport);
         var desired = [-airport[0], -airport[1]];
 
         var interval = setInterval(function() {
@@ -274,4 +278,12 @@ function Visualiser(onLoad) {
             svg.selectAll("path").attr("d", path);
         }, 8);
     };
+
+    this.highlight = function(airport) {
+        $(".points")
+            .attr("fill", airportFill);
+
+        $("#airport-" + airport[2].iata)
+            .attr("fill", airportHighlighted);
+    }
 }

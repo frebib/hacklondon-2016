@@ -8,7 +8,7 @@ function Player(vis) {
     this.money = 1000;
     this.startDate = new Date();
     this.date = this.startDate;
-    var secondLength = 10;
+    var secondLength = 1;
     this.date.setMonth(this.date.getMonth() + 1);
 
     this.logicalTick = function() {
