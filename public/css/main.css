@@ -80,7 +80,6 @@ body {
 .details-infected, #end-infections {
     color: #880000;
 }
-
 .game-message {
     /*position: absolute;*/
     margin: 0 auto;
