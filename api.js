@@ -43,8 +43,6 @@ exports.getAirportConnections = function (airportCode, date, callback) {
             if (!quote["Direct"])
                 continue;
 
-            // todo calculate from another api call
-            var time = 2;
             var departureTime = quote["OutboundLeg"]["DepartureDate"];
 
             var price = quote["MinPrice"];
@@ -55,7 +53,6 @@ exports.getAirportConnections = function (airportCode, date, callback) {
             connections.push({
                 airport: destination,
                 cost: price,
-                time: time,
                 departureTime: departureTime,
                 carrier: carrier
             })

@@ -57,22 +57,59 @@ function Player(vis) {
         });
     };
 
-    this.showOptions = function() {
+    function calculateTime(srcAirport, dstAirport) {
+
+        // much thanks http://www.geodatasource.com/developers/javascript
+        function distance(lat1, lon1, lat2, lon2, unit) {
+            var radlat1 = Math.PI * lat1 / 180;
+            var radlat2 = Math.PI * lat2 / 180;
+            var theta = lon1 - lon2;
+            var radtheta = Math.PI * theta / 180;
+            var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+            dist = Math.acos(dist);
+            dist = dist * 180 / Math.PI;
+            dist = dist * 60 * 1.1515;
+            if (unit == "K") {
+                dist = dist * 1.609344;
+            }
+            if (unit == "N") {
+                dist = dist * 0.8684;
+            }
+            return dist;
+        }
+
+        var dist = distance(srcAirport.lat, srcAirport.lon, dstAirport.lat, dstAirport.lon, 'K');
+        var planeSpeed = 893; // km/h
+
+        var time = planeSpeed / dist;
+
+        // hours to minutes
+        time *= 60;
+
+        return time
+    }
+
+    this.showOptions = function () {
         var obj = this;
+
         function callback(options) {
             // Set the option panel
             var all = $("<table></table>")
                 .attr("class", "all-options");
 
-            options.forEach(function(o) {
-                var airport = airports.getLocatedAirportForCode(o.airport)[2];
+            options.forEach(function (o) {
+                var dstAirport = airports.getLocatedAirportForCode(o.airport)[2];
+                var srcAirport = airports.getLocatedAirportForCode(obj.currentAirport())[2];
+
+
+                o.time = calculateTime(srcAirport, dstAirport);
 
                 var container = $("<tr></tr>")
                     .attr("class", "option-container")
                     .append(
                         $("<td></td>")
                             .attr("class", "option-name")
-                            .text(airport.name + ", " + airport.country)
+                            .text(dstAirport.name + ", " + dstAirport.country)
                     )
                     .append(
                         $("<td></td>")
@@ -87,18 +124,18 @@ function Player(vis) {
                     .append(
                         $("<td></td>")
                             .attr("class", "option-time")
-                            .text(o.time + " hour" + (o.time == 1 ? "" : "s"))
+                            .text(o.time.toFixed(0) + " minutes")
                     )
                     .append(
                         $("<td></td>").append(
                             $("<button></button>")
                                 .attr("class", "option-buy")
                                 .text("Buy")
-                                .click(function() {
-                                obj.carryOutOption(o);
-                                obj.refresh();
-                                obj.vis.panToAirport(o.airport);
-                            })
+                                .click(function () {
+                                    obj.carryOutOption(o);
+                                    obj.refresh();
+                                    obj.vis.panToAirport(o.airport);
+                                })
                         )
                     );
 
