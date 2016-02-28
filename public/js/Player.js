@@ -8,7 +8,7 @@ function Player(vis) {
     this.money = 14300;
     this.startDate = new Date();
     this.date = new Date(this.startDate.getTime() + 1000 * 60 * 60 * 24 * 365 / 12); // Add 1 month
-    this.nextFetch = 0;
+    this.lastFetch = new Date();
     this.countries = {};
     this.lastTime = new Date();
     this.timeInterval = 0;
@@ -43,14 +43,33 @@ function Player(vis) {
         }
     };
 
-    this.getNextOptions = function (callback) {
+    this.fetchNextFlights = function() {
+        var obj = this;
+        var od = obj.lastFetch;
+        if (od.getMonth == 11)
+            obj.lastFetch = new Date(od.getFullYear(), 0, 1);
+        else
+            obj.lastFetch = new Date(od.getFullYear(), od.getMonth() + 1, 1);
+
+        var callback = function(options) {
+            Array.prototype.push.apply(obj.flightData, options.filter(function (o) {
+                o.elem = null;
+                return new Date(o.departureTime).getTime() > obj.date.getTime();
+            }).sort(function (o1, o2) {
+                return new Date(o1.departureTime).getTime() - new Date(o2.departureTime).getTime();
+            }));
+        };
+        obj.getNextOptions(obj.lastFetch, callback);
+    };
+
+    this.getNextOptions = function (date, callback) {
         // Return API call for next airports
         $.getJSON({
             url: "/api",
             data: {
                 que: "getConnections",
                 from: this.currentAirport(),
-                date: formatDateForAPI(this.date)
+                date: formatDateForAPI(date)
             },
             success: callback
         });
@@ -89,27 +108,25 @@ function Player(vis) {
     this.showOptions = function () {
         var obj = this;
 
-        if (this.date >= this.nextFetch) {
-            this.nextFetch = new Date(this.date.getTime() + 1000 * 60 * 60 * 24 * 14);
-
-            var callback = function(options) {
-                obj.flightData = options.filter(function (o) {
-                    return new Date(o.departureTime).getTime() > obj.date.getTime();
-                }).sort(function (o1, o2) {
-                    return new Date(o1.departureTime).getTime() - new Date(o2.departureTime).getTime();
-                });
-            };
-            this.getNextOptions(callback);
-        }
-
-        //this.flightData.filter(function (o) {
-        //    return new Date(o.departureTime).getTime() > obj.date.getTime();
-        //});
-
         // Set the option panel
-        var all = $("<ol>").attr("class", "all-options");
+        var all = $("ol.all-options");
+        if (all.length < 1)
+            all = $("<ol>", { class: "all-options" }).appendTo(obj.$optionPanel);
 
-        this.flightData.slice(0, 10).forEach(function (o) {
+        var toRemove = [];
+        for (var i in this.flightData) {
+            if (all.length >= 10)
+                break; // Enough elements in list
+
+            var o = this.flightData[i];
+            if (o.elem) {
+                if (obj.date.getTime() > new Date(o.departureTime).getTime()) {
+                    toRemove.push(o);
+                    o.elem.remove();
+                }
+                continue;
+            }
+
             try {
                 var dstAirport = airports.getLocatedAirportForCode(o.airport)[2];
                 var srcAirport = airports.getLocatedAirportForCode(obj.currentAirport())[2];
@@ -118,8 +135,7 @@ function Player(vis) {
             }
 
             o.time = calculateTime(srcAirport, dstAirport);
-
-            var container = $("<li>")
+            o.elem = $("<li>")
                 .attr("class", "option-container")
                 .append(
                     $("<div>")
@@ -143,7 +159,7 @@ function Player(vis) {
                 )
                 .append(
                     $("<div>").append(
-                        $("<button></button>")
+                        $("<button>")
                             .attr("class", "option-buy")
                             .text("Buy")
                             .click(function () {
@@ -152,17 +168,19 @@ function Player(vis) {
                                 obj.vis.panToAirport(o.airport);
                             })
                     )
-                );
+                ).appendTo(all);
+        }
 
-            all.append(container);
-        });
+        for (var key in toRemove)
+            if (obj.flightData.indexOf(key) != -1)
+                obj.flightData.splice(key, 1);
 
-        obj.$optionPanel.empty();
-        obj.$optionPanel.append(all);
+        if (obj.flightData < 10)
+            this.fetchNextFlights();
 
         if (this.flightData.length == 0 && obj.money > 0) {
             obj.$optionPanel
-                .html("<div>Waiting for more flights...</div>");
+                .html('<div id="waiting">Waiting for more flights...</div>');
             obj.$optionPanel
                 .append(
                     $("<button>Go forward a day</button>")
@@ -171,19 +189,21 @@ function Player(vis) {
                             obj.date.setTime(obj.date.getTime() + 1000 * 60 * 60 * 24);
                         })
                 )
-                .append($("<br/>"))
+                .append($('<br/>'))
                 .append(
-                    $("<button>Replay</button>")
+                    $('<button>Replay</button>')
                         .attr("class", "game-button")
                         .click(function() {
                             gameEnded(obj);
                         })
                 )
+        } else {
+            $('div#waiting').remove();
         }
 
         // Draw the lines
         obj.vis.clearFlightPaths();
-        for (var i = 0; i < this.flightData.length; i++) {
+        for (i = 0; i < this.flightData.length; i++) {
             obj.vis.showFlightPath(obj.currentAirport(), this.flightData[i].airport);
         }
     };
@@ -208,19 +228,18 @@ function Player(vis) {
     this.amountInfected = function () {
         var total = 0;
 
-        for (var key in this.countries) {
-            if (this.countries.hasOwnProperty(key)) {
-                if (this.countries[key]) {
+        for (var key in this.countries)
+            if (this.countries.hasOwnProperty(key))
+                if (this.countries[key])
                     total += this.countries[key];
-                }
-            }
-        }
 
         return total;
     };
 
     this.visitedAirport = function (code) {
         this.airportHistory.push(code);
+        this.flightData = [];
+        this.fetchNextFlights();
         var airport = airports.getLocatedAirportForCode(code);
         this.countries[airport[2].iso] = airport[2].population;
 
@@ -231,11 +250,11 @@ function Player(vis) {
         var obj = this;
         setTimeout(function() {
             gameEnded(obj);
-            clearInterval(obj.logicInterval);
             clearInterval(obj.timeInterval);
         }, 1000);
     };
 
+    this.timeTick();
     this.vis.panToAirport(this.currentAirport());
 }
 
