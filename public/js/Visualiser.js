@@ -2,8 +2,8 @@ function Visualiser(onLoad) {
     this.onLoad = onLoad;
     var countryFill = "#669900";
     var countryBorder = "#46472b";
-    var airportFill = "#cc3300";
-    var airportBorder = "#992600";
+    var airportFill = "#DDD"; // "#cc3300";
+    var airportBorder = "#333"; // "#992600";
     var airportHighlighted = "#FFFFFF";
 
     var mousePosition = [];
