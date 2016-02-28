@@ -7,7 +7,7 @@ function Visualiser(onLoad) {
     var airportHighlighted = "#FFFFFF";
 
     var mousePosition = [];
-    
+
     var $container = $("body");
     var $tooltip = $("#tooltip");
 
@@ -145,7 +145,7 @@ function Visualiser(onLoad) {
                 .attr("stroke", countryBorder)
                 .attr("stroke-width", "0.1px");
 
-            obj.loadAirports();
+            //obj.loadAirports();
             onLoad();
         });
     };

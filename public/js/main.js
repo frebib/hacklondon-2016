@@ -3,8 +3,8 @@ var airports;
 var player;
 
 $(function() {
-    airports = new Airports(function() {
-        vis = new Visualiser(function() {
+    vis = new Visualiser(function() {
+        airports = new Airports(function() {
             player = new Player(vis);
         });
     });
