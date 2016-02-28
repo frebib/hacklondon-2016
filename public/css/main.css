@@ -97,6 +97,7 @@ body {
 .game-button {
     font-size: 150%;
     border-radius: 10px;
+    margin-top: 40px;
 }
 
 #message-container {

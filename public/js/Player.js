@@ -158,7 +158,16 @@ function Player(vis) {
             obj.$optionPanel.append(all);
 
             if (options.length == 0 && obj.money > 0) {
-                obj.$optionPanel.text("Waiting for more flights...");
+                obj.$optionPanel
+                    .html("<div>Waiting for more flights...</div>");
+                obj.$optionPanel
+                    .append(
+                        $("<button>Replay</button>")
+                            .attr("class", "game-button")
+                            .click(function() {
+                                gameEnded(obj);
+                            })
+                    )
             }
 
             // Draw the lines
