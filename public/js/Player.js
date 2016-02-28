@@ -139,7 +139,7 @@ function Player(vis) {
                 .append(
                     $("<div>")
                         .attr("class", "option-time")
-                        .text(o.time.toFixed(0) + " minutes")
+                        .text(formatTime(o.time.toFixed(0)))
                 )
                 .append(
                     $("<div>").append(
@@ -260,4 +260,15 @@ function formatNumber(n) {
     }
 
     return n.toFixed(3) + " " + exts[i];
+}
+
+function formatTime(t) {
+    if (t == 1) {
+        return t + " minute";
+    } else if (t < 60) {
+        return t + " minutes";
+    } else {
+        var minutes = (t % 60);
+        return parseInt(Math.floor(t / 60)) + "h" + (minutes == 0 ? "" : minutes + "m");
+    }
 }
