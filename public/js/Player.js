@@ -1,6 +1,6 @@
 function Player(vis) {
-    var $optionPanel = $("#option-panel");
-    var $detailsPanel = $("#details-panel");
+    var $optionPanel = $("#option-panel-content");
+    var $detailsPanel = $("#details-panel-content");
 
     this.vis = vis;
     this.startAirport = "LGW";
