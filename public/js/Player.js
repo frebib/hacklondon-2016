@@ -250,7 +250,7 @@ function formatDateForAPI(date) {
 
 function formatDateForDisplay(date) {
     var s = date.toString().split(" ");
-    return s[4] + " - " + s[2] + " " + s[1] + " " + s[3];
+    return s[4].slice(0, -3) + " - " + s[2] + " " + s[1] + " " + s[3];
 }
 
 function formatNumber(n) {
