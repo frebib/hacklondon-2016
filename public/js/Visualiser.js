@@ -19,6 +19,7 @@ function Visualiser(onLoad) {
     var globeRotation = {x: 670, y: 400};
     var centre = [width / 2 + $("#sidebar").width() / 2, height / 2];
     var scale = height / 2 - 50;
+    var panSpeed = 0.25;
 
     var projection = d3.geo.orthographic()
         .scale(scale)
@@ -268,11 +269,13 @@ function Visualiser(onLoad) {
 
         var interval = setInterval(function() {
             var current = projection.rotate();
-            if (Math.abs(current[0] - desired[0]) < 0.1 && Math.abs(current[1] - desired[1]) < 0.1) {
+            var diff = [desired[0] - current[0], desired[1] - current[1]];
+
+            if (Math.abs(diff[0]) < 0.1 && Math.abs(diff[1]) < 0.1) {
                 projection.rotate(desired);
                 clearInterval(interval);
             } else {
-                projection.rotate([(desired[0] + current[0]) / 2, (desired[1] + current[1]) / 2]);
+                projection.rotate([current[0] + (diff[0] * panSpeed), current[1] + (diff[1] * panSpeed)]);
             }
 
             svg.selectAll("path").attr("d", path);
