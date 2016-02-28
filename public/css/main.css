@@ -7,23 +7,36 @@
     background-color: rgba(200, 200, 200, 0.75);
     padding: 5px;
 }
-
 body {
     font-family: Verdana, Geneva, sans-serif;
-    background-color: #6699ff;
+    background-color: #f2f2f2;
 }
-
-#option-panel{
+#details-panel{
     text-align: center;
     float: left;
     padding: 50px;
-    border: 0px solid #bfbfbf;
-    border-radius: 20px;
+    border: 0px solid black;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     background-color: #e6e6e6;
     white-space:nowrap;
     width: 200px;
     position: absolute;
     top: 10px;
+    left: 10px;
+}
+#option-panel{
+    text-align: center;
+    float: left;
+    padding: 50px;
+    border: 0px solid black;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #e6e6e6;
+    white-space:nowrap;
+    width: 200px;
+    position: absolute;
+    top: 195px;
     left: 10px;
 }
 .option-container{
@@ -33,8 +46,6 @@ body {
 .option-name{
     margin: 0 -50px;
     font-size: 28px;
-    /*border-top: 1px solid black;*/
-    /*border-bottom: 1px solid black;*/
     background-color: #d9d9d9;
 }
 .option-container > div{
@@ -51,15 +62,4 @@ button{
 }
 button:hover{
     color: #3e8e41;
-}
-#details-panel{
-
-    text-align: center;
-    padding: 50px;
-    border: 0px solid #bfbfbf;
-    border-radius: 20px;
-    background-color: #e6e6e6;
-    white-space:nowrap;
-    width: 200px;
-    position: absolute;
 }
