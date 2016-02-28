@@ -23,7 +23,6 @@ body {
     border: 0px solid black;
     border-radius: 20px;
     padding: 20 30px;
-
     display: none;
 }
 #sidebar p{
@@ -47,7 +46,8 @@ body {
     text-align: center;
 }
 #options-panel-content{
-    height: 300px;
+    margin: auto;
+    height: 75%;
     overflow: scroll;
     overflow-x:hidden;
 }
@@ -87,21 +87,38 @@ body {
     padding: 100px;
     background-color: rgba(200, 200, 200, 0.8);
     text-align: center;
-
     font-size: 140%;
-
+    border: 0px solid black;
     border-radius: 10px;
 }
-
+#title{
+    padding: 15px;
+    background-color: #880000;
+    color: #cccccc;
+    margin: 0 -100px;
+    letter-spacing:2px;
+    word-spacing:5px;
+    border-bottom: 9px solid #660000;
+}
+#fin{
+    padding: 15px;
+    background-color: #880000;
+    color: #cccccc;
+    margin: 0 -100px;
+    letter-spacing:2px;
+    word-spacing:5px;
+    border-bottom: 9px solid #660000;
+}
 .game-button {
+    padding: 4 15px;
     font-size: 150%;
     border-radius: 10px;
-    margin-top: 40px;
+    margin-top: 40px
 }
 
 #message-container {
     margin: 0 auto;
-    padding: 100px;
+    padding: 200px;
 }
 
 #end-message {
