@@ -45,12 +45,8 @@ function Visualiser(onLoad) {
 
     var $svg = $container.find("svg");
 
-    var circle = svg.append("circle")
-        .attr("cx", width / 2)
-        .attr("cy", height / 2)
-        .attr("r", 400)
-        .attr("fill", "#66b3ff")
-        .attr("stroke", "#333");
+    setupStars();
+    setupOzone();
 
     $svg.on("mousemove", function(e) {
         if (!isMouseDown)
@@ -84,6 +80,49 @@ function Visualiser(onLoad) {
         e.preventDefault();
         return false;
     });
+
+    function setupOzone() {
+        var rg = "rgb(51, 153, ";
+
+        for (var i = 0; i < 10; i++) {
+            var color = parseInt(170 + ((i / 10) * 40));
+            var radius = parseInt(450 - ((i / 10) * 50));
+            var opacity = i / 40;
+
+            console.log(color);
+
+            svg.append("circle")
+                .attr("cx", width / 2)
+                .attr("cy", height / 2)
+                .attr("r", radius)
+                .attr("fill", rg + color + ")")
+                .attr("stroke", rg + color + ")")
+                .attr("opacity", opacity)
+                .attr("stroke", "#333");
+        }
+
+        svg.append("circle")
+            .attr("cx", width / 2)
+            .attr("cy", height / 2)
+            .attr("r", radius)
+            .attr("fill", rg  +" 255)")
+            .attr("stroke", rg + " 255)")
+            .attr("opacity", 1)
+            .attr("stroke", "#333");
+    }
+
+    function setupStars() {
+        for (var i = 0; i < 200; i++) {
+            svg.append("circle")
+                .attr("class", "star")
+                .attr("cx", Math.random() * width)
+                .attr("cy", Math.random() * height)
+                .attr("r", Math.random() * 2)
+                .attr("fill", "#FFFFCC")
+                .attr("stroke", "#FFFFCC")
+                .attr("opacity", 1);
+        }
+    }
 
     function handleRotation() {
         if (globeRotation.y > 800) globeRotation.y = 800;
