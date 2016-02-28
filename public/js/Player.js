@@ -81,24 +81,12 @@ function Player(vis) {
     };
 
     this.showDetails = function() {
-        this.$detailsPanel.text("");
-
-        this.$detailsPanel
-            .append(
-                $("<div></div>")
-                    .attr("class", "details-current")
-                    .text(this.currentAirport())
-            )
-            .append(
-                $("<div></div>")
-                    .attr("class", "details-money")
-                    .text("£" + this.money)
-            )
-            .append(
-                $("<div></div>")
-                    .attr("class", "details-date")
-                    .text(formatDateForDisplay(this.date))
-            );
+        $(".details-current")
+            .text(this.currentAirport());
+        $(".details-money")
+            .text("£" + this.money);
+        $(".details-date")
+            .text(formatDateForDisplay(this.date))
     };
 
     this.refresh = function() {
