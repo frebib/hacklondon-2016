@@ -164,18 +164,18 @@ function Player(vis) {
                     .html("<div>Waiting for more flights...</div>");
                 obj.$optionPanel
                     .append(
-                        $("<button>Replay</button>")
-                            .attr("class", "game-button")
-                            .click(function() {
-                                gameEnded(obj);
-                            })
-                    )
-                    .append($("<br/>"))
-                    .append(
                         $("<button>Go forward a day</button>")
                             .attr("class", "game-button")
                             .click(function() {
                                 obj.date.setTime(obj.date.getTime() + 1000 * 60 * 60 * 24);
+                            })
+                    )
+                    .append($("<br/>"))
+                    .append(
+                        $("<button>Replay</button>")
+                            .attr("class", "game-button")
+                            .click(function() {
+                                gameEnded(obj);
                             })
                     )
             }
