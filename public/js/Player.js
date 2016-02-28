@@ -35,8 +35,6 @@ function Player(vis) {
             var all = $("<div></div>")
                 .attr("class", "all-options");
 
-            console.log(options);
-
             options.forEach(function(o) {
                 var container = $("<div></div>")
                     .attr("class", "option-container")
@@ -71,8 +69,6 @@ function Player(vis) {
 
             obj.$optionPanel.text("");
             obj.$optionPanel.append(all);
-
-            console.log(all);
 
             // Draw the lines
             obj.vis.clearFlightPaths();

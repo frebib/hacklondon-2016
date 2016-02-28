@@ -89,8 +89,6 @@ function Visualiser(onLoad) {
             var radius = parseInt(450 - ((i / 10) * 50));
             var opacity = i / 40;
 
-            console.log(color);
-
             svg.append("circle")
                 .attr("cx", width / 2)
                 .attr("cy", height / 2)
@@ -168,7 +166,7 @@ function Visualiser(onLoad) {
             }
         };
 
-        airports.locatedAirports.forEach(function (a) {
+        airports.filteredAirports.forEach(function (a) {
             topojsonObject.objects.events.coordinates = [a];
             svg.append("path")
                 .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))

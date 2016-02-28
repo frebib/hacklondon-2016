@@ -1,15 +1,19 @@
 function Airports(onLoad) {
     this.onLoad = onLoad;
-    this.airports = [];
-    this.locatedAirports = [];
+    this.filteredAirports = [];
+    this.allAirports = [];
 
     this.load = function() {
         var obj = this;
         d3.json("json/airports.json", function (error, rawAirports) {
             if (error) throw error;
 
-            obj.airports = rawAirports;
-            obj.locatedAirports = parseAirports(obj.airports);
+            obj.allAirports = parseAirports(rawAirports);
+
+            obj.filteredAirports = obj.allAirports.filter(function(cur) {
+                cur = cur[2];
+                return cur.size == "large" && cur.status == 1 && cur.type == "airport" && cur.name;
+            });
 
             obj.onLoad();
         });
@@ -21,7 +25,7 @@ function Airports(onLoad) {
         for (var i = 0; i < airports.length; i++) {
             var cur = airports[i];
 
-            if (!cur.lat || !cur.lon || cur.size != "large" || cur.status == 0 || cur.type != "airport" || !cur.name) {
+            if (!cur.lat || !cur.lon) {
                 continue;
             }
 
@@ -33,38 +37,26 @@ function Airports(onLoad) {
         return parsed;
     }
 
-    this.getAirportForCode = function(code) {
-        return this.getLocatedAirportForCode(code)[2];
-    };
-
     this.getLocatedAirportForCode = function(code) {
         // soz
-        this.locatedAirports = parseAirports(this.airports);
+        this.filteredAirports = parseAirports(this.filteredAirports);
 
-        for (var i = 0; i < this.locatedAirports.length; i++) {
-            var cur = this.locatedAirports[i][2];
-            if (cur.iso == code || cur.iata == code) {
-                return this.locatedAirports[i];
-            }
-        }
+        var filtered = this.filteredAirports.filter(function(a) {
+            return a[2].iso == code || a[2].iata == code;
+        });
 
-        return undefined;
-    };
-
-    this.getAirportForName = function(name) {
-        var airport = this.getLocatedAirportForName(name);
-        if (airport) {
-            return airport[2];
+        if (filtered.length != 0) {
+            return filtered[0];
         } else {
-            return undefined;
-        }
-    };
+            filtered = this.allAirports.filter(function(a) {
+                return a[2].iso == code || a[2].iata == code;
+            });
 
-    this.getLocatedAirportForName = function(name) {
-        for (var i = 0; i < this.locatedAirports.length; i++) {
-            var cur = this.locatedAirports[i][2];
-            if (cur.name == name) {
-                return this.locatedAirports[i];
+            if (filtered.length != 0) {
+                this.filteredAirports.push(filtered[0]);
+                return filtered[0];
+            } else {
+                return undefined;
             }
         }
     };
