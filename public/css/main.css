@@ -41,19 +41,20 @@ body {
 #option-panel > div{
     padding: 5px 0;
 }
-.option-container{
-    padding: 10px 0px;
-    text-align: center;
-}
 #options-panel-content{
     margin: auto;
     height: 75%;
     overflow: scroll;
     overflow-x:hidden;
 }
+.option-container{
+    margin-left: -50px;
+    text-align: center;
+    padding: 10px;
+    list-style: none;
+}
 .option-container > div{
-    padding: 8px;
-    float: left;
+    padding: 3px;
 }
 .option-container button{
     margin: 10px 0px;
@@ -61,22 +62,23 @@ body {
     border: none;
     text-align: center;
     display: inline-block;
-    font-size: 20px;
+    font-size: 22px;
     background-color: transparent;
 }
 .option-container button:hover{
     color: #3e8e41;
 }
-
+.option-name{
+    font-size: 22px;
+    color: darkred;
+}
 .details-money, .details-infected , #end-infections, #end-time{
     font-weight: bold;
     font-size: 120%;
 }
-
 .details-money, #end-time {
     color: #3e8e41;
 }
-
 .details-infected, #end-infections {
     color: #880000;
 }
@@ -114,12 +116,10 @@ body {
     border-radius: 10px;
     margin-top: 40px
 }
-
 #message-container {
     margin: 0 auto;
     padding: 10% 5%;
 }
-
 #end-message {
     display: none;
 }
