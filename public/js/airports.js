@@ -21,7 +21,7 @@ function Airports(onLoad) {
         for (var i = 0; i < airports.length; i++) {
             var cur = airports[i];
 
-            if (!cur.lat || !cur.lon || cur.size != "large" || cur.status == 0 || cur.type != "airport") {
+            if (!cur.lat || !cur.lon || cur.size != "large" || cur.status == 0 || cur.type != "airport" || !cur.name) {
                 continue;
             }
 
