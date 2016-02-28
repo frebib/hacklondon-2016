@@ -72,7 +72,7 @@ function Player(vis) {
                     .append(
                         $("<td></td>")
                             .attr("class", "option-name")
-                            .text(airport.name)
+                            .text(airport.name + ", " + airport.country)
                     )
                     .append(
                         $("<td></td>")
