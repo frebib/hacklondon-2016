@@ -7,6 +7,7 @@ function Player(vis) {
     this.airportHistory = [this.startAirport];
     this.money = 1000;
     this.date = new Date();
+    this.date.setMonth(this.date.getMonth() + 1);
 
     this.carryOutOption = function(option) {
         this.airportHistory.push(option.airport);
