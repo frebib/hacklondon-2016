@@ -7,35 +7,27 @@ function Player(vis) {
     this.airportHistory = [];
     this.money = 14300;
     this.startDate = new Date();
-    this.date = new Date(this.startDate.getTime());
-    var minuteLength = 1;
-    this.date.setMonth(this.date.getMonth() + 1);
+    this.date = new Date(this.startDate.getTime() + 1000 * 60 * 60 * 24 * 365 / 12); // Add 1 month
+    this.nextFetch = 0;
     this.countries = {};
+    this.lastTime = new Date();
     this.timeInterval = 0;
-    this.logicInterval = 0;
-
-    this.logicalTick = function () {
-        this.showOptions();
-    };
-
 
     this.timeTick = function () {
-        this.date.setTime(this.date.getTime() + 1000);
+        var diff = new Date().getTime() - this.lastTime;
+        this.date.setTime(this.date.getTime() + diff * 1000);
+        this.lastTime = new Date().getTime();
 
         this.showDetails();
+        this.showOptions();
     };
 
 
     this.setupTicks = function () {
         var obj = this;
-
-        this.timeInterval = setInterval(function () {
+        this.timeInterval = setInterval(function() {
             obj.timeTick();
-        }, minuteLength);
-
-        this.logicInterval = setInterval(function () {
-            obj.logicalTick();
-        }, 500);
+        }, 10);
     };
 
     this.setupTicks();
@@ -96,6 +88,14 @@ function Player(vis) {
     this.showOptions = function () {
         var obj = this;
 
+        if (this.date < this.nextFetch)
+            return;
+
+        this.nextFetch = new Date(this.date.getTime() + 1000 * 60 * 60 * 24 * 14);
+
+        console.log(this.date.getMonth());
+        console.log(this.nextFetch);
+
         function callback(options) {
             options = options.filter(function(o) {
                 return new Date(o.departureTime).getTime() > obj.date.getTime();
@@ -147,7 +147,7 @@ function Player(vis) {
                                 .text("Buy")
                                 .click(function () {
                                     obj.carryOutOption(o);
-                                    obj.refresh();
+                                    obj.timeTick();
                                     obj.vis.panToAirport(o.airport);
                                 })
                         )
@@ -203,11 +203,6 @@ function Player(vis) {
             .text("Infected: " + formatNumber(this.amountInfected()));
     };
 
-    this.refresh = function () {
-        this.showDetails();
-        this.showOptions();
-    };
-
     this.currentAirport = function () {
         return this.airportHistory[this.airportHistory.length - 1];
     };
@@ -244,7 +239,6 @@ function Player(vis) {
     };
 
     this.visitedAirport(this.startAirport);
-    this.refresh();
     this.vis.panToAirport(this.currentAirport());
 }
 
