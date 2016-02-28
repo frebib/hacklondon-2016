@@ -11,22 +11,30 @@ function Visualiser(onLoad) {
     var $container = $("body");
     var $tooltip = $("#tooltip");
 
-    var width = $container.width(),
-        height = $container.height();
+    var width, height, centre, scale;
+
     var isMouseDown = false;
     var mouseDownLocation = {x: 0, y: 0};
     var globeRotation = {x: 670, y: 400};
-    var centre = [width / 2 + $("#sidebar").width() / 2, height / 2];
-    var scale = height / 2 - 50;
     var panSpeed = 0.3;
 
     var projection = d3.geo.orthographic()
-        .scale(scale)
-        .translate(centre)
         .clipAngle(90);
 
     var path = d3.geo.path()
         .projection(projection);
+
+    function resetDimensions() {
+        width = $container.width();
+        height = $container.height();
+        centre = [width / 2 + ($("#sidebar").width() + 75) / 2, height / 2];
+        scale = Math.min(height, width - $("#sidebar").width()) / 2 - 50;
+        projection
+            .scale(scale)
+            .translate(centre)
+    }
+
+    resetDimensions();
 
     var scaleX = d3.scale.linear()
         .domain([0, width])
@@ -47,6 +55,13 @@ function Visualiser(onLoad) {
     });
 
     var $svg = $container.find("svg");
+    $(window).resize(function() {
+        width = $container.width();
+        height = $container.height();
+        resetDimensions();
+        svg.selectAll("path").attr("d", path);
+        svg.selectAll("circle").attr("d", path);
+    });
 
     setupStars();
     setupOzone();
