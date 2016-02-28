@@ -105,6 +105,7 @@ function Player(vis) {
             var all = $("<table></table>")
                 .attr("class", "all-options");
 
+
             options.forEach(function (o) {
                 try {
                     var dstAirport = airports.getLocatedAirportForCode(o.airport)[2];
@@ -155,6 +156,10 @@ function Player(vis) {
 
             obj.$optionPanel.text("");
             obj.$optionPanel.append(all);
+
+            if (options.length == 0 && obj.money > 0) {
+                obj.$optionPanel.text("Waiting for more flights...");
+            }
 
             // Draw the lines
             obj.vis.clearFlightPaths();
