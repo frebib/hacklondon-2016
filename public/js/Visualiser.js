@@ -95,8 +95,7 @@ function Visualiser(onLoad) {
                 .attr("r", radius)
                 .attr("fill", rg + color + ")")
                 .attr("stroke", rg + color + ")")
-                .attr("opacity", opacity)
-                .attr("stroke", "#333");
+                .attr("opacity", opacity);
         }
 
         svg.append("circle")
