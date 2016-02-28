@@ -7,8 +7,7 @@ function Visualiser(onLoad) {
     var airportHighlighted = "#FFFFFF";
 
     var mousePosition = [];
-    var highlighted = undefined;
-
+    
     var $container = $("body");
     var $tooltip = $("#tooltip");
 
