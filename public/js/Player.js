@@ -30,12 +30,12 @@ function Player(vis) {
         var obj = this;
 
         this.timeInterval = setInterval(function () {
-            obj.logicalTick();
-        }, 500);
+            obj.timeTick();
+        }, minuteLength);
 
         this.logicInterval = setInterval(function () {
-            obj.timeTick();
-        }, secondLength);
+            obj.logicalTick();
+        }, 500);
     };
 
     this.setupTicks();
