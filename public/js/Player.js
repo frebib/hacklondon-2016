@@ -129,17 +129,17 @@ function Player(vis) {
                 .append(
                     $("<div>")
                         .attr("class", "option-cost")
-                        .text("£" + o.cost)
+                        .text("Cost: £" + o.cost)
                 )
                 .append(
                     $("<div>")
                         .attr("class", "option-start")
-                        .text(formatDateForDisplay(new Date(o.departureTime)))
+                        .text("Arrival: " + formatDateForDisplay(new Date(o.departureTime)))
                 )
                 .append(
                     $("<div>")
                         .attr("class", "option-time")
-                        .text(formatTime(o.time.toFixed(0)))
+                        .text("Duration: " + formatTime(o.time.toFixed(0)))
                 )
                 .append(
                     $("<div>").append(
