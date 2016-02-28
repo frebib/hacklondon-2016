@@ -4,12 +4,13 @@ function Player(vis) {
 
     this.vis = vis;
     this.startAirport = "LGW";
-    this.airportHistory = [this.startAirport];
+    this.airportHistory = [];
     this.money = 1000;
     this.startDate = new Date();
     this.date = this.startDate;
     var secondLength = 1;
     this.date.setMonth(this.date.getMonth() + 1);
+    this.countries = {};
 
     this.logicalTick = function() {
         this.showOptions();
@@ -38,7 +39,7 @@ function Player(vis) {
     this.setupTicks();
 
     this.carryOutOption = function(option) {
-        this.airportHistory.push(option.airport);
+        this.visitedAirport(option.airport);
         this.money -= option.cost;
         this.date.setTime(this.date.getTime() + option.time * 60 * 60 * 1000);
     };
@@ -59,12 +60,6 @@ function Player(vis) {
     this.showOptions = function() {
         var obj = this;
         function callback(options) {
-            //console.log(
-            //    options
-            //        .map(function(o) { return airports.getLocatedAirportForCode(o); })
-            //        .map(function(a) { return a.name; })
-            //);
-
             // Set the option panel
             var all = $("<table></table>")
                 .attr("class", "all-options");
@@ -127,7 +122,9 @@ function Player(vis) {
         $(".details-money")
             .text("£" + this.money);
         $(".details-date")
-            .text(formatDateForDisplay(this.date))
+            .text(formatDateForDisplay(this.date));
+        $(".details-infected")
+            .text(this.amountInfected());
     };
 
     this.refresh = function() {
@@ -139,6 +136,25 @@ function Player(vis) {
         return this.airportHistory[this.airportHistory.length - 1];
     };
 
+    this.amountInfected = function() {
+        var total = 0;
+
+        for (var key in this.countries) {
+            if (this.countries.hasOwnProperty(key)) {
+                total += this.countries[key];
+            }
+        }
+
+        return total;
+    };
+
+    this.visitedAirport = function(code) {
+        this.airportHistory.push(code);
+        var airport = airports.getLocatedAirportForCode(code);
+        this.countries[airport[2].iso] = airport[2].population;
+    };
+
+    this.visitedAirport(this.startAirport);
     this.refresh();
     this.vis.panToAirport(this.currentAirport());
 }

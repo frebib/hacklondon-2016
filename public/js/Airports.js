@@ -61,7 +61,6 @@ function Airports(onLoad) {
         for (var i = 0; i < this.countries.length; i++) {
             if (this.countries[i].countryCode == airport.iso) {
                 airport.population = parseInt(this.countries[i].population);
-                console.log(airport.population);
             }
         }
     };
