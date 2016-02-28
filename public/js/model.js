@@ -16,7 +16,15 @@ function Player(vis) {
 
     this.getNextOptions = function(callback) {
         // Return API call for next airports
-        api.getAirportConnections(this.currentAirport, this.date, callback);
+        $.getJSON({
+            url: "/api",
+            data: {
+                que: "getConnections",
+                from: this.currentAirport,
+                date: formatDate(this.date)
+            },
+            success: callback
+        });
     };
 
     this.showOptions = function() {
@@ -101,3 +109,10 @@ function Player(vis) {
 
     this.refresh();
 }
+
+function formatDate(date) {
+    return date.getFullYear() + "-"
+        + ('0' + (date.getMonth() + 1)).slice(-2) + "-"
+        + ('0' + date.getDate()).slice(-2);
+}
+
