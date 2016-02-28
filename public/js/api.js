@@ -4,7 +4,57 @@ const CONNECTIONS = 'getConnections';
 
 exports.getAirportConnections = function (airportCode, date, callback) {
 
-    requestApi(callback, getApiUrl({
+    var connectionParser = function (json) {
+        var connections = [];
+
+        var quotes = json['Quotes'];
+        for (var q = 0; q < quotes.length; q++) {
+            var quote = quotes[q];
+            if (!quote["Direct"])
+                continue;
+
+            // todo calculate from another api call
+            var time = 2;
+            var departureTime = quote["OutboundLeg"]["DepartureDate"];
+
+            var price = quote["MinPrice"];
+
+            var carrier = getCarrier(json, quote);
+            var destination = getDestination(json, quote);
+
+            connections.push({
+                airport: destination,
+                cost: price,
+                time: time,
+                departureTime: departureTime,
+                carrier: carrier
+            })
+        }
+
+        callback(connections);
+
+
+        function getCarrier(json, quote) {
+            var id = quote["OutboundLeg"]["CarrierIds"][0];
+            var carriers = json["Carriers"];
+            for (var i = 0; i < carriers.length; i++)
+                if (carriers[i]["CarrierId"] == id)
+                    return carriers[i]["Name"];
+            return null;
+        }
+
+        function getDestination(json, quote) {
+            var id = quote["OutboundLeg"]["DestinationId"];
+            var places = json["Places"];
+            for (var i = 0; i < places.length; i++)
+                if (places[i]["PlaceId"] == id)
+                    return places[i]["Name"];
+            return null;
+        }
+
+    };
+
+    requestApi(connectionParser, getApiUrl({
         que: CONNECTIONS,
         from: airportCode,
         date: date

@@ -12,8 +12,9 @@ app.use(express.static(__dirname + '/public'));
 
 // api for testing
 //app.get('/api/', function (req, res) {
-//    api.getAirportConnections("LON", new Date(), function(json) {
-//        console.log("RESPONSE: " + json);
+//    api.getAirportConnections("LON", new Date(2016, 03, 20, 15, 00, 00, 00), function (connections) {
+//        for (var i = 0; i < connections.length; i++)
+//            console.log(JSON.stringify(connections[i]));
 //    });
 //});
 
