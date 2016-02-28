@@ -53,7 +53,10 @@ function Airports(onLoad) {
             });
 
             if (filtered.length != 0) {
-                this.filteredAirports.push(filtered[0]);
+                var newAirport = filtered[0];
+
+                this.filteredAirports.push(newAirport);
+                vis.addAirport(newAirport);
                 return filtered[0];
             } else {
                 return undefined;

@@ -130,10 +130,8 @@ function Visualiser(onLoad) {
         svg.selectAll("path").attr("d", path);
     }
 
-    load();
-
-    function load() {
-
+    this.load = function() {
+        var obj = this;
         d3.json("json/world-110m.json", function (error, world) {
             if (error) throw error;
 
@@ -145,18 +143,27 @@ function Visualiser(onLoad) {
                 .attr("stroke", countryBorder)
                 .attr("stroke-width", "0.1px");
 
-            loadAirports();
+            obj.loadAirports();
             onLoad();
         });
-    }
+    };
 
-    function loadAirports() {
+    this.load();
+
+    this.loadAirports = function() {
+        var obj = this;
+        airports.filteredAirports.forEach(function (a) {
+            obj.addAirport(a);
+        });
+    };
+
+    this.addAirport = function(a) {
         var topojsonObject = {
             type: "Topology",
             objects: {
                 events: {
                     type: "MultiPoint",
-                    coordinates: []
+                    coordinates: [a]
                 }
             },
             arcs: [],
@@ -166,27 +173,24 @@ function Visualiser(onLoad) {
             }
         };
 
-        airports.filteredAirports.forEach(function (a) {
-            topojsonObject.objects.events.coordinates = [a];
-            svg.append("path")
-                .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
-                .attr("class", "points")
-                .attr("stroke", airportBorder)
-                .attr("fill", airportFill)
-                .attr("d", path.pointRadius(function (d) {
-                    return 5;
-                }))
-                .on("mouseover", function (d) {
-                    var name = getObjectFromTopojson(d).name;
-                    $tooltip.text(name);
-                    $tooltip.show();
-                })
-                .on("mouseout", function (d) {
-                    $tooltip.fadeOut(250);
-                })
-        });
-    }
-
+        //topojsonObject.objects.events.coordinates = [a];
+        svg.append("path")
+            .datum(topojson.feature(topojsonObject, topojsonObject.objects.events))
+            .attr("class", "points")
+            .attr("stroke", airportBorder)
+            .attr("fill", airportFill)
+            .attr("d", path.pointRadius(function (d) {
+                return 5;
+            }))
+            .on("mouseover", function (d) {
+                var name = getObjectFromTopojson(d).name;
+                $tooltip.text(name);
+                $tooltip.show();
+            })
+            .on("mouseout", function (d) {
+                $tooltip.fadeOut(250);
+            });
+    };
 
     function randomFlightPath() {
         var airport = airports[parseInt(Math.random() * airports.length)];
