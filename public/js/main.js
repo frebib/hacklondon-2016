@@ -45,6 +45,12 @@ function Visualiser(onLoad) {
 
     var $svg = $container.find("svg");
 
+    var circle = svg.append("circle")
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .attr("r", 400)
+        .attr("fill", "#66b3ff");
+
     $svg.on("mousemove", function(e) {
         if (!isMouseDown)
             return;
@@ -211,7 +217,21 @@ function Visualiser(onLoad) {
     };
 
     this.panToAirport = function(code) {
+        var airport = airports.getLocatedAirportForCode(code);
+        console.log(projection.rotate());
+        var desired = [-airport[0], -airport[1]];
 
+        var interval = setInterval(function() {
+            var current = projection.rotate();
+            if (Math.abs(current[0] - desired[0]) < 0.1 && Math.abs(current[1] - desired[1]) < 0.1) {
+                projection.rotate(desired);
+                clearInterval(interval);
+            } else {
+                projection.rotate([(desired[0] + current[0]) / 2, (desired[1] + current[1]) / 2]);
+            }
+
+            svg.selectAll("path").attr("d", path);
+        }, 8);
     };
 }
 
