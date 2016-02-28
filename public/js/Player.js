@@ -1,6 +1,6 @@
 function Player(vis) {
-    var $optionPanel = $("#option-panel-content");
-    var $detailsPanel = $("#details-panel-content");
+    this.$optionPanel = $("#options-panel-content");
+    this.$detailsPanel = $("#details-panel-content");
 
     this.vis = vis;
     this.startAirport = "LGW";
@@ -34,6 +34,8 @@ function Player(vis) {
             var all = $("<div></div>")
                 .attr("class", "all-options");
 
+            console.log(options);
+
             options.forEach(function(o) {
                 var container = $("<div></div>")
                     .attr("class", "option-container")
@@ -66,8 +68,10 @@ function Player(vis) {
                 all.append(container);
             });
 
-            $optionPanel.text("");
-            $optionPanel.append(all);
+            obj.$optionPanel.text("");
+            obj.$optionPanel.append(all);
+
+            console.log(all);
 
             // Draw the lines
             obj.vis.clearFlightPaths();
@@ -80,9 +84,9 @@ function Player(vis) {
     };
 
     this.showDetails = function() {
-        $detailsPanel.text("");
+        this.$detailsPanel.text("");
 
-        $detailsPanel
+        this.$detailsPanel
             .append(
                 $("<div></div>")
                     .attr("class", "details-current")
