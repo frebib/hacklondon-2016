@@ -19,7 +19,7 @@ function Visualiser(onLoad) {
     var globeRotation = {x: 670, y: 400};
     var centre = [width / 2 + $("#sidebar").width() / 2, height / 2];
     var scale = height / 2 - 50;
-    var panSpeed = 0.25;
+    var panSpeed = 0.1;
 
     var projection = d3.geo.orthographic()
         .scale(scale)
@@ -263,6 +263,8 @@ function Visualiser(onLoad) {
     };
 
     this.panToAirport = function(code) {
+        this.clearFlightPaths();
+
         var airport = airports.getLocatedAirportForCode(code);
         this.highlight(airport);
         var desired = [-airport[0], -airport[1]];
@@ -271,7 +273,7 @@ function Visualiser(onLoad) {
             var current = projection.rotate();
             var diff = [desired[0] - current[0], desired[1] - current[1]];
 
-            if (Math.abs(diff[0]) < 0.1 && Math.abs(diff[1]) < 0.1) {
+            if (Math.abs(diff[0]) < 5 && Math.abs(diff[1]) < 5) {
                 projection.rotate(desired);
                 clearInterval(interval);
             } else {
