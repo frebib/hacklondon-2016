@@ -258,7 +258,11 @@ function formatNumber(n) {
         i++;
     }
 
-    return n.toFixed(3) + " " + exts[i];
+    if (i == 0) {
+        return n;
+    } else {
+        return n.toFixed(3) + " " + exts[i];
+    }
 }
 
 function formatTime(t) {
