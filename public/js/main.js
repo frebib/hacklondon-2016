@@ -38,9 +38,9 @@ function Visualiser(onLoad) {
         .attr("height", height);
 
     $container.on("mousemove", function(e) {
-        mousePosition = [e.screenX, e.screenY];
-        $tooltip.css("top", mousePosition[1] - 140);
-        $tooltip.css("left", mousePosition[0] - 15);
+        mousePosition = [e.pageX, e.pageY];
+        $tooltip.css("top", mousePosition[1] - 10);
+        $tooltip.css("left", mousePosition[0] + 10);
     });
 
     var $svg = $container.find("svg");
