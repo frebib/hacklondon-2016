@@ -8,7 +8,7 @@ function Player(vis) {
     this.money = 14300;
     this.startDate = new Date();
     this.date = this.startDate;
-    var secondLength = 1;
+    var minuteLength = 1;
     this.date.setMonth(this.date.getMonth() + 1);
     this.countries = {};
     this.timeInterval = 0;
