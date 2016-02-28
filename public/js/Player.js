@@ -65,12 +65,14 @@ function Player(vis) {
                 .attr("class", "all-options");
 
             options.forEach(function(o) {
+                var airport = airports.getLocatedAirportForCode(o.airport)[2];
+
                 var container = $("<tr></tr>")
                     .attr("class", "option-container")
                     .append(
                         $("<td></td>")
                             .attr("class", "option-name")
-                            .text("Nick's Rad Airport")
+                            .text(airport.name)
                     )
                     .append(
                         $("<td></td>")
