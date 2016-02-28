@@ -197,7 +197,7 @@ function Visualiser(onLoad) {
         }
     }
 
-    function registerFlightPath(fp) {
+    function registerFlightPath(fp, slowly) {
         for (var i = 1; i < fp.length; i++) {
             fp[i][0] = fp[i][0] - fp[0][0];
             fp[i][1] = fp[i][1] - fp[0][1];
@@ -286,6 +286,7 @@ function Visualiser(onLoad) {
     this.countryInfected = function(iso) {
         console.log("Infected: " + iso);
         svg.selectAll(".country-" + iso)
+            .transition().duration(3000)
             .attr("fill", "black");
 
         svg.selectAll(".point").attr("d", path);
