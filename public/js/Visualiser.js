@@ -18,7 +18,7 @@ function Visualiser(onLoad) {
     var globeRotation = {x: 670, y: 400};
     var centre = [width / 2 + $("#sidebar").width() / 2, height / 2];
     var scale = height / 2 - 50;
-    var panSpeed = 0.6;
+    var panSpeed = 0.3;
 
     var projection = d3.geo.orthographic()
         .scale(scale)
@@ -128,8 +128,8 @@ function Visualiser(onLoad) {
         if (globeRotation.y > 800) globeRotation.y = 800;
         if (globeRotation.y < 0)   globeRotation.y = 0;
 
-        projection.rotate([scaleX(globeRotation.x), scaleY(globeRotation.y)]);
-        svg.selectAll("path").attr("d", path);
+        //projection.rotate([scaleX(globeRotation.x), scaleY(globeRotation.y)]);
+        //svg.selectAll("path").attr("d", path);
     }
 
     this.load = function() {
