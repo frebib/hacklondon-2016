@@ -5,7 +5,7 @@ function Player(vis) {
     this.vis = vis;
     this.startAirport = "LGW";
     this.airportHistory = [];
-    this.money = 14300;
+    this.money = 1;
     this.startDate = new Date();
     this.date = this.startDate;
     var secondLength = 1;
@@ -46,9 +46,7 @@ function Player(vis) {
         this.date.setTime(new Date(option.departureTime).getTime() + (option.time * 60 * 1000));
 
         if (this.money < 0) {
-            gameEnded(this);
-            clearInterval(this.logicInterval);
-            clearInterval(this.timeInterval);
+            this.finish();
         }
     };
 
@@ -99,7 +97,7 @@ function Player(vis) {
         var obj = this;
 
         function callback(options) {
-            var options = options.filter(function(o) {
+            options = options.filter(function(o) {
                 return new Date(o.departureTime).getTime() > obj.date.getTime();
             });
 
@@ -108,9 +106,12 @@ function Player(vis) {
                 .attr("class", "all-options");
 
             options.forEach(function (o) {
-                var dstAirport = airports.getLocatedAirportForCode(o.airport)[2];
-                var srcAirport = airports.getLocatedAirportForCode(obj.currentAirport())[2];
-
+                try {
+                    var dstAirport = airports.getLocatedAirportForCode(o.airport)[2];
+                    var srcAirport = airports.getLocatedAirportForCode(obj.currentAirport())[2];
+                } catch(e) {
+                    return;
+                }
 
                 o.time = calculateTime(srcAirport, dstAirport);
 
@@ -207,6 +208,15 @@ function Player(vis) {
         this.countries[airport[2].iso] = airport[2].population;
 
         vis.countryInfected(airport[2].iso);
+    };
+
+    this.finish = function() {
+        var obj = this;
+        setTimeout(function() {
+            gameEnded(obj);
+            clearInterval(obj.logicInterval);
+            clearInterval(obj.timeInterval);
+        }, 1000);
     };
 
     this.visitedAirport(this.startAirport);
