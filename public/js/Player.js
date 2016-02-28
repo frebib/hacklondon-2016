@@ -13,6 +13,7 @@ function Player(vis) {
     this.lastTime = new Date();
     this.timeInterval = 0;
     this.flightData = [];
+    this.requestCount = 0;
 
     this.timeTick = function () {
         var diff = new Date().getTime() - this.lastTime;
@@ -64,6 +65,7 @@ function Player(vis) {
 
     this.getNextOptions = function (date, callback) {
         // Return API call for next airports
+        this.requestCount++;
         $.getJSON({
             url: "/api",
             data: {
@@ -175,7 +177,7 @@ function Player(vis) {
             if (obj.flightData.indexOf(key) != -1)
                 obj.flightData.splice(key, 1);
 
-        if (obj.flightData < 10)
+        if (obj.flightData < 10 && obj.requestCount <= 6)
             this.fetchNextFlights();
 
         if (this.flightData.length == 0 && obj.money > 0) {
@@ -255,6 +257,7 @@ function Player(vis) {
     };
 
     this.timeTick();
+    this.requestCount = 0;
     this.vis.panToAirport(this.currentAirport());
 }
 
