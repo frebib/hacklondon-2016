@@ -98,7 +98,7 @@ function Player(vis) {
             .append(
                 $("<div></div>")
                     .attr("class", "details-date")
-                    .text(this.date)
+                    .text(formatDate(this.date))
             );
     };
 
