@@ -103,11 +103,11 @@ function requestApi(callback, apiUrl) {
     // add api key (yuk)
     apiUrl += "?apiKey=" + process.env.API_KEY;
 
-    console.log("Requesting: " + apiUrl);
+    //console.log("Requesting: " + apiUrl);
 
     // request
     request(apiUrl, function (error, response, body) {
-        console.log("API says " + response.statusCode);
+        //console.log("API says " + response.statusCode);
         if (error || response.statusCode != 200)
             callback(null);
         else
