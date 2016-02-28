@@ -1,6 +1,6 @@
 require('dotenv').config();
 var connect = require('connect');
-var api = require('./public/js/api');
+var api = require('./api');
 var http = require('http');
 var util = require('util');
 var express = require('express');
