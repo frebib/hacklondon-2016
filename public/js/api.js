@@ -1,10 +1,40 @@
-var request = require('requestify');
+var request = require('request');
+var http = require('http');
 
 const CONNECTIONS = 'getConnections';
+exports.handleApiCall = function (req, res) {
+
+    var query = req.query;
+    if (query.que) {
+
+        switch (query.que) {
+
+            case CONNECTIONS:
+                var from = query.from;
+                var date = query.date;
+                if (from && date) {
+                    exports.getAirportConnections(from, date, function (json) {
+                        res.writeHead(200, null, req.headers);
+                        res.end(JSON.stringify(json));
+                    });
+                    return;
+                }
+
+        }
+        res.writeHead(400, null, req.headers);
+        res.end("{}");
+    }
+
+};
 
 exports.getAirportConnections = function (airportCode, date, callback) {
 
     var connectionParser = function (json) {
+        if (!json) {
+            callback([]);
+            return;
+        }
+
         var connections = [];
 
         var quotes = json['Quotes'];
@@ -72,13 +102,14 @@ function requestApi(callback, apiUrl) {
     console.log("Requesting: " + apiUrl);
 
     // request
-    request
-        .get(apiUrl)
-        .then(function (res) {
-            console.log("API says " + res.code);
-            if (res.code == 200)
-                callback(res.getBody());
-        });
+    request(apiUrl, function (error, response, body) {
+        console.log("API says " + response.statusCode);
+        if (error || response.statusCode != 200)
+            callback(null);
+        else
+            callback(JSON.parse(body));
+    });
+
 }
 
 /**
@@ -92,7 +123,7 @@ function getApiUrl(params) {
         var dateParam = params['date'];
         var fromParam = params['from'];
         if (dateParam && fromParam)
-            return flightsFrom(fromParam, formatDate(dateParam));
+            return flightsFrom(fromParam, formatDate(new Date(dateParam)));
     }
 
     return;
