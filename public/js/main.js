@@ -26,4 +26,8 @@ $(function(){
         $("#sidebar").show();
         startGame();
     });
+
+    $("#replay-button").click(function() {
+        location.reload();
+    });
 });
