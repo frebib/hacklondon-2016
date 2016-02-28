@@ -5,12 +5,14 @@ function Player(vis) {
     this.vis = vis;
     this.startAirport = "LGW";
     this.airportHistory = [];
-    this.money = 14300;
+    this.money = 1;
     this.startDate = new Date();
     this.date = this.startDate;
     var secondLength = 1;
     this.date.setMonth(this.date.getMonth() + 1);
     this.countries = {};
+    this.timeInterval = 0;
+    this.logicInterval = 0;
 
     this.logicalTick = function () {
         this.showOptions();
@@ -27,11 +29,11 @@ function Player(vis) {
     this.setupTicks = function () {
         var obj = this;
 
-        setInterval(function () {
+        this.timeInterval = setInterval(function () {
             obj.logicalTick();
         }, 500);
 
-        setInterval(function () {
+        this.logicInterval = setInterval(function () {
             obj.timeTick();
         }, secondLength);
     };
@@ -42,6 +44,12 @@ function Player(vis) {
         this.visitedAirport(option.airport);
         this.money -= option.cost;
         this.date.setTime(this.date.getTime() + option.time * 60 * 60 * 1000);
+
+        if (this.money < 0) {
+            gameEnded(this);
+            clearInterval(this.logicInterval);
+            clearInterval(this.timeInterval);
+        }
     };
 
     this.getNextOptions = function (callback) {

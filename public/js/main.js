@@ -10,11 +10,18 @@ function startGame() {
     });
 }
 
-console.log("eh");
+function gameEnded(player) {
+    $("#end-message").show();
+    $("#globe").hide();
+    $("#sidebar").hide();
+    console.log("end");
+
+    $("#end-infections").text(formatNumber(player.amountInfected()));
+    $("#end-time").text(((player.startDate.getTime() - player.date.getTime()) / 1000 / 60 / 60).toFixed(2));
+}
 
 $(function(){
     $("#start-button").click(function() {
-        console.log("something");
         $("#start-message").hide();
         $("#sidebar").show();
         startGame();

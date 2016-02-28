@@ -81,20 +81,20 @@ body {
     color: #3e8e41;
 }
 
-.details-money, .details-infected {
+.details-money, .details-infected , #end-infections, #end-time{
     font-weight: bold;
     font-size: 120%;
 }
 
-.details-money {
+.details-money, #end-time {
     color: #3e8e41;
 }
 
-.details-infected {
+.details-infected, #end-infections {
     color: #880000;
 }
 
-#start-message {
+.game-message {
     /*position: absolute;*/
     margin: 0 auto;
     padding: 100px;
@@ -107,14 +107,18 @@ body {
     border-radius: 10px;
 }
 
-#start-button {
+.game-button {
     font-size: 150%;
     border-radius: 10px;
 }
 
-#start-message-container {
+#message-container {
     margin: 0 auto;
     padding: 100px;
+}
+
+#end-message {
+    display: none;
 }
 
 
