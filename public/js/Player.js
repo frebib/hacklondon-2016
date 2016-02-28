@@ -168,6 +168,14 @@ function Player(vis) {
                                 gameEnded(obj);
                             })
                     )
+                    .append($("<br/>"))
+                    .append(
+                        $("<button>Go forward a day</button>")
+                            .attr("class", "game-button")
+                            .click(function() {
+                                obj.date.setTime(obj.date.getTime() + 1000 * 60 * 60 * 24);
+                            })
+                    )
             }
 
             // Draw the lines
