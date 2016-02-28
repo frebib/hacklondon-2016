@@ -14,67 +14,63 @@ function Player(vis) {
         this.date.setTime(this.date.getTime() + option.time * 60 * 60 * 1000);
     };
 
-    this.getNextOptions = function() {
+    this.getNextOptions = function(callback) {
         // Return API call for next airports
-        return [{
-            airport: "CJU",
-            cost: 126,
-            time: 2 // in hours
-        },
-        {
-            airport: "PUS",
-            cost: 126,
-            time: 2 // in hours
-        }];
+        api.getAirportConnections(this.currentAirport, this.date, callback);
     };
 
     this.showOptions = function() {
-        // Set the option panel
-        var options = this.getNextOptions();
-        var all = $("<div></div>")
-            .attr("class", "all-options");
-
         var obj = this;
-        options.forEach(function(o) {
-            var container = $("<div></div>")
-                .attr("class", "option-container")
-                .append(
-                    $("<div></div>")
-                        .attr("class", "option-name")
-                        .text(o.airport)
-                )
-                .append(
-                    $("<div></div>")
-                        .attr("class", "option-cost")
-                        .text("£" + o.cost)
-                )
-                .append(
-                    $("<div></div>")
-                        .attr("class", "option-time")
-                        .text(o.time + " hour" + (o.time == 1 ? "" : "s"))
-                )
-                .append(
-                    $("<button></button>")
-                        .attr("class", "option-buy")
-                        .text("Buy")
-                        .click(function() {
-                            obj.carryOutOption(o);
-                            obj.refresh();
-                            obj.vis.panToAirport(o.airport);
-                        })
-                );
+        function callback() {
+            // Set the option panel
+            var options = obj.getNextOptions();
+            var all = $("<div></div>")
+                .attr("class", "all-options");
 
-            all.append(container);
-        });
+            var obj = obj;
+            options.forEach(function(o) {
+                var container = $("<div></div>")
+                    .attr("class", "option-container")
+                    .append(
+                        $("<div></div>")
+                            .attr("class", "option-name")
+                            .text(o.airport)
+                    )
+                    .append(
+                        $("<div></div>")
+                            .attr("class", "option-cost")
+                            .text("£" + o.cost)
+                    )
+                    .append(
+                        $("<div></div>")
+                            .attr("class", "option-time")
+                            .text(o.time + " hour" + (o.time == 1 ? "" : "s"))
+                    )
+                    .append(
+                        $("<button></button>")
+                            .attr("class", "option-buy")
+                            .text("Buy")
+                            .click(function() {
+                                obj.carryOutOption(o);
+                                obj.refresh();
+                                obj.vis.panToAirport(o.airport);
+                            })
+                    );
 
-        $optionPanel.text("");
-        $optionPanel.append(all);
+                all.append(container);
+            });
 
-        // Draw the lines
-        this.vis.clearFlightPaths();
-        for (var i = 0; i < options.length; i++) {
-            this.vis.showFlightPath(this.currentAirport, options[i].airport);
+            $optionPanel.text("");
+            $optionPanel.append(all);
+
+            // Draw the lines
+            obj.vis.clearFlightPaths();
+            for (var i = 0; i < options.length; i++) {
+                obj.vis.showFlightPath(obj.currentAirport, options[i].airport);
+            }
         }
+
+        this.getNextOptions(callback);
     };
 
     this.showDetails = function() {
