@@ -108,6 +108,7 @@ function Player(vis) {
     };
 
     this.refresh();
+    this.vis.panToAirport(this.currentAirport);
 }
 
 function formatDateForAPI(date) {
