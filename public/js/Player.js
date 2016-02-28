@@ -3,8 +3,8 @@ function Player(vis) {
     this.$detailsPanel = $("#details-panel-content");
 
     this.vis = vis;
-    this.startAirport = "KEF";
-    this.airportHistory = [];
+    this.startAirport = "LGW";
+    this.airportHistory = [this.startAirport];
     this.money = 14300;
     this.startDate = new Date();
     this.date = new Date(this.startDate.getTime() + 1000 * 60 * 60 * 24 * 365 / 12); // Add 1 month
@@ -236,7 +236,6 @@ function Player(vis) {
         }, 1000);
     };
 
-    this.visitedAirport(this.startAirport);
     this.vis.panToAirport(this.currentAirport());
 }
 
