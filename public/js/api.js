@@ -78,7 +78,7 @@ exports.getAirportConnections = function (airportCode, date, callback) {
             var places = json["Places"];
             for (var i = 0; i < places.length; i++)
                 if (places[i]["PlaceId"] == id)
-                    return places[i]["Name"];
+                    return places[i]["IataCode"];
             return null;
         }
 
