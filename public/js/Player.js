@@ -99,7 +99,9 @@ function Player(vis) {
         function callback(options) {
             options = options.filter(function(o) {
                 return new Date(o.departureTime).getTime() > obj.date.getTime();
-            });
+            }).sort(function (o1, o2) {
+                return new Date(o1.departureTime).getTime() - new Date(o2.departureTime).getTime();
+            }).slice(0, 5);
 
             // Set the option panel
             var all = $("<table></table>")
