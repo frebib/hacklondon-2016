@@ -48,9 +48,15 @@ body {
     text-align: center;
 }
 .option-name{
-    margin: 0 -50px;
-    font-size: 22px;
-    background-color: #d9d9d9;
+    /*margin: 0 -50px;*/
+    /*font-size: 22px;*/
+    /*background-color: #e6e6e6;*/
+
+    font-size:21px;
+    background-color: #e6e6e6;
+    margin: 0 -30px;
+    padding: 3px 0;
+    margin-bottom: 10px;
 }
 .option-container > div{
     padding: 8px;
