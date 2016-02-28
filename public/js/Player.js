@@ -4,12 +4,12 @@ function Player(vis) {
 
     this.vis = vis;
     this.startAirport = "LGW";
-    this.currentAirport = this.startAirport;
+    this.airportHistory = [this.startAirport];
     this.money = 1000;
     this.date = new Date();
 
     this.carryOutOption = function(option) {
-        this.currentAirport = option.airport;
+        this.airportHistory.push(option.airport);
         this.money -= option.cost;
         this.date.setTime(this.date.getTime() + option.time * 60 * 60 * 1000);
     };
@@ -20,7 +20,7 @@ function Player(vis) {
             url: "/api",
             data: {
                 que: "getConnections",
-                from: this.currentAirport,
+                from: this.currentAirport(),
                 date: formatDateForAPI(this.date)
             },
             success: callback
@@ -74,7 +74,7 @@ function Player(vis) {
             // Draw the lines
             obj.vis.clearFlightPaths();
             for (var i = 0; i < options.length; i++) {
-                obj.vis.showFlightPath(obj.currentAirport, options[i].airport);
+                obj.vis.showFlightPath(obj.currentAirport(), options[i].airport);
             }
         }
 
@@ -88,7 +88,7 @@ function Player(vis) {
             .append(
                 $("<div></div>")
                     .attr("class", "details-current")
-                    .text(this.currentAirport)
+                    .text(this.currentAirport())
             )
             .append(
                 $("<div></div>")
@@ -107,8 +107,12 @@ function Player(vis) {
         this.showOptions();
     };
 
+    this.currentAirport = function() {
+        return this.airportHistory[this.airportHistory.length - 1];
+    }
+
     this.refresh();
-    this.vis.panToAirport(this.currentAirport);
+    this.vis.panToAirport(this.currentAirport());
 }
 
 function formatDateForAPI(date) {
