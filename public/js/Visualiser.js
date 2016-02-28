@@ -16,10 +16,10 @@ function Visualiser(onLoad) {
     var mouseDownLocation = {x: 0, y: 0};
     var globeRotation = {x: 670, y: 400};
     var centre = [width / 2 + $("#sidebar").width() / 2, height / 2];
-
+    var scale = height / 2 - 50;
 
     var projection = d3.geo.orthographic()
-        .scale(400)
+        .scale(scale)
         .translate(centre)
         .clipAngle(90);
 
@@ -87,7 +87,7 @@ function Visualiser(onLoad) {
 
         for (var i = 0; i < 10; i++) {
             var color = parseInt(170 + ((i / 10) * 40));
-            var radius = parseInt(450 - ((i / 10) * 50));
+            var radius = parseInt(scale + 50 - ((i / 10) * 50));
             var opacity = i / 40;
 
             svg.append("circle")
@@ -102,7 +102,7 @@ function Visualiser(onLoad) {
         svg.append("circle")
             .attr("cx", centre[0])
             .attr("cy", centre[1])
-            .attr("r", radius)
+            .attr("r", scale)
             .attr("fill", rg  +" 255)")
             .attr("stroke", rg + " 255)")
             .attr("opacity", 1)
