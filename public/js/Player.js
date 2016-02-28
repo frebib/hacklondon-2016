@@ -130,5 +130,6 @@ function formatDateForAPI(date) {
 }
 
 function formatDateForDisplay(date) {
-    return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " - " + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+    var s = date.toString().split(" ");
+    return s[4] + " - " + s[2] + " " + s[1] + " " + s[3];
 }
