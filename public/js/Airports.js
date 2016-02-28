@@ -51,5 +51,23 @@ function Airports(onLoad) {
         return undefined;
     };
 
+    this.getAirportForName = function(name) {
+        var airport = this.getLocatedAirportForName(name);
+        if (airport) {
+            return airport[2];
+        } else {
+            return undefined;
+        }
+    };
+
+    this.getLocatedAirportForName = function(name) {
+        for (var i = 0; i < this.locatedAirports.length; i++) {
+            var cur = this.locatedAirports[i][2];
+            if (cur.name == name) {
+                return this.locatedAirports[i];
+            }
+        }
+    };
+
     this.load();
 }

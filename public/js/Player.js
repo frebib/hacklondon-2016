@@ -29,9 +29,8 @@ function Player(vis) {
 
     this.showOptions = function() {
         var obj = this;
-        function callback() {
+        function callback(options) {
             // Set the option panel
-            var options = obj.getNextOptions();
             var all = $("<div></div>")
                 .attr("class", "all-options");
 
@@ -109,7 +108,7 @@ function Player(vis) {
 
     this.currentAirport = function() {
         return this.airportHistory[this.airportHistory.length - 1];
-    }
+    };
 
     this.refresh();
     this.vis.panToAirport(this.currentAirport());
