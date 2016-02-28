@@ -135,7 +135,7 @@ function getApiUrl(params) {
 
 function flightsFrom(from, date) {
     return "http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/" +
-        "GB/GBP/en-GB/" + from + "/anywhere/" + date;
+        "GB/GBP/en-GB/" + from + "/anywhere/" + date.toString().slice(0, -3);
 }
 
 function formatDate(date) {
