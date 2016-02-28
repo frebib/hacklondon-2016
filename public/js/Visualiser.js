@@ -153,7 +153,7 @@ function Visualiser(onLoad) {
     this.loadAirports = function() {
         var obj = this;
         airports.filteredAirports.forEach(function (a) {
-            obj.addAirport(a);
+            obj.addAirport(airports.toTopojson(a));
         });
     };
 

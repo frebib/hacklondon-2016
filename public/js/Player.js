@@ -6,8 +6,21 @@ function Player(vis) {
     this.startAirport = "LGW";
     this.airportHistory = [this.startAirport];
     this.money = 1000;
-    this.date = new Date();
+    this.startDate = new Date();
+    this.date = this.startDate;
+    var dateIncrement = 60 * 60;
     this.date.setMonth(this.date.getMonth() + 1);
+
+    this.tick = function() {
+        this.date.setTime(this.date.getTime() + dateIncrement);
+
+        this.refresh();
+    };
+
+    var obj = this;
+    setInterval(function() {
+        obj.tick();
+    }, 500);
 
     this.carryOutOption = function(option) {
         this.airportHistory.push(option.airport);
@@ -31,6 +44,12 @@ function Player(vis) {
     this.showOptions = function() {
         var obj = this;
         function callback(options) {
+            //console.log(
+            //    options
+            //        .map(function(o) { return airports.getLocatedAirportForCode(o); })
+            //        .map(function(a) { return a.name; })
+            //);
+
             // Set the option panel
             var all = $("<table></table>")
                 .attr("class", "all-options");
@@ -111,5 +130,5 @@ function formatDateForAPI(date) {
 }
 
 function formatDateForDisplay(date) {
-    return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+    return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " - " + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
 }
