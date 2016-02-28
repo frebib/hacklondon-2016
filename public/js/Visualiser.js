@@ -179,6 +179,7 @@ function Visualiser(onLoad) {
             .attr("class", "points")
             .attr("stroke", airportBorder)
             .attr("fill", airportFill)
+            .attr("opacity", 0.8)
             .attr("d", path.pointRadius(function (d) {
                 return 5;
             }))
