@@ -18,7 +18,7 @@ function Visualiser(onLoad) {
     var globeRotation = {x: 670, y: 400};
     var centre = [width / 2 + $("#sidebar").width() / 2, height / 2];
     var scale = height / 2 - 50;
-    var panSpeed = 0.5;
+    var panSpeed = 0.6;
 
     var projection = d3.geo.orthographic()
         .scale(scale)
@@ -227,7 +227,8 @@ function Visualiser(onLoad) {
             .attr("class", "flight-path")
             .attr("d", path)
             .attr("stroke-width", "3px")
-            .attr("stroke", "blue");
+            .attr("opacity", 0.9)
+            .attr("stroke", "#447");
     }
 
     function getObjectFromTopojson(tj) {
