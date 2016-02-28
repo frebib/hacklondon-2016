@@ -124,22 +124,22 @@ function Player(vis) {
                 .append(
                     $("<div>")
                         .attr("class", "option-name")
-                        .text(dstAirport.name + ", " + dstAirport.country)
+                        .html(dstAirport.name + ", " + dstAirport.country)
                 )
                 .append(
                     $("<div>")
                         .attr("class", "option-cost")
-                        .text("Cost: £" + o.cost)
+                        .html("Cost: <span class='option-value'>£" + o.cost + "</span>")
                 )
                 .append(
                     $("<div>")
                         .attr("class", "option-start")
-                        .text("Arrival: " + formatDateForDisplay(new Date(o.departureTime)))
+                        .html("Arrival: <span class='option-value'>" + formatDateForDisplay(new Date(o.departureTime)) + "</span>")
                 )
                 .append(
                     $("<div>")
                         .attr("class", "option-time")
-                        .text("Duration: " + formatTime(o.time.toFixed(0)))
+                        .html("Duration: <span class='option-value'>" + formatTime(o.time.toFixed(0)) + "</span>")
                 )
                 .append(
                     $("<div>").append(

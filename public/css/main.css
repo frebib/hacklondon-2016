@@ -124,4 +124,7 @@ body {
     display: none;
 }
 
-
+.option-value {
+    font-weight: bold;
+    color: #333;
+}
