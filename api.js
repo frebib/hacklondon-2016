@@ -43,7 +43,14 @@ exports.getAirportConnections = function (airportCode, date, callback) {
             if (!quote["Direct"])
                 continue;
 
-            var departureTime = quote["OutboundLeg"]["DepartureDate"];
+            // TOTALLY RANDOM
+            function random(seed) {
+                return Math.sin(seed) % 37;
+            }
+
+            var departureTime = new Date(quote["OutboundLeg"]["DepartureDate"]);
+            var seed = parseInt(quote["MinPrice"]);
+            departureTime.setHours(random(seed) * 23, random(seed + 1) * 59);
 
             var price = quote["MinPrice"];
 
