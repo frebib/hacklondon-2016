@@ -90,8 +90,6 @@ function Visualiser(onLoad) {
 
         projection.rotate([scaleX(globeRotation.x), scaleY(globeRotation.y)]);
         svg.selectAll("path").attr("d", path);
-
-        console.log(globeRotation);
     }
 
     load();
@@ -219,7 +217,6 @@ function Visualiser(onLoad) {
 
     this.panToAirport = function(code) {
         var airport = airports.getLocatedAirportForCode(code);
-        console.log(projection.rotate());
         var desired = [-airport[0], -airport[1]];
 
         var interval = setInterval(function() {
