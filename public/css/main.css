@@ -5,6 +5,7 @@
 
 body {
     font-family: Verdana, Geneva, sans-serif;
+    background-color: #6699ff;
 }
 
 #option-panel{
@@ -41,7 +42,19 @@ button{
     text-align: center;
     display: inline-block;
     font-size: 23px;
+    background-color: transparent;
 }
 button:hover{
     color: #3e8e41;
+}
+#details-panel{
+
+    text-align: center;
+    padding: 50px;
+    border: 0px solid #bfbfbf;
+    border-radius: 20px;
+    background-color: #e6e6e6;
+    white-space:nowrap;
+    width: 200px;
+    position: absolute;
 }

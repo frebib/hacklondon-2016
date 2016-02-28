@@ -1,9 +1,9 @@
 function Visualiser(onLoad) {
     this.onLoad = onLoad;
-    var countryFill = "#b5b690";
+    var countryFill = "#669900";
     var countryBorder = "#46472b";
-    var airportFill = "#46472b";
-    var airportBorder = "#f1f1dc";
+    var airportFill = "#cc3300";
+    var airportBorder = "#992600";
 
     var mousePosition = [];
 
@@ -97,6 +97,7 @@ function Visualiser(onLoad) {
     load();
 
     function load() {
+
         d3.json("json/world-110m.json", function (error, world) {
             if (error) throw error;
 
