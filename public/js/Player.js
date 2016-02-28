@@ -32,36 +32,38 @@ function Player(vis) {
         var obj = this;
         function callback(options) {
             // Set the option panel
-            var all = $("<div></div>")
+            var all = $("<table></table>")
                 .attr("class", "all-options");
 
             options.forEach(function(o) {
-                var container = $("<div></div>")
+                var container = $("<tr></tr>")
                     .attr("class", "option-container")
                     .append(
-                        $("<div></div>")
+                        $("<td></td>")
                             .attr("class", "option-name")
                             .text(o.airport)
                     )
                     .append(
-                        $("<div></div>")
+                        $("<td></td>")
                             .attr("class", "option-cost")
                             .text("£" + o.cost)
                     )
                     .append(
-                        $("<div></div>")
+                        $("<td></td>")
                             .attr("class", "option-time")
                             .text(o.time + " hour" + (o.time == 1 ? "" : "s"))
                     )
                     .append(
-                        $("<button></button>")
-                            .attr("class", "option-buy")
-                            .text("Buy")
-                            .click(function() {
+                        $("<td></td>").append(
+                            $("<button></button>")
+                                .attr("class", "option-buy")
+                                .text("Buy")
+                                .click(function() {
                                 obj.carryOutOption(o);
                                 obj.refresh();
                                 obj.vis.panToAirport(o.airport);
                             })
+                        )
                     );
 
                 all.append(container);
